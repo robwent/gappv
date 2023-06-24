@@ -4,9 +4,10 @@ use Google\Analytics\Data\V1beta\BetaAnalyticsDataClient;
 use Google\Analytics\Data\V1beta\DateRange;
 use Google\Analytics\Data\V1beta\Dimension;
 use Google\Analytics\Data\V1beta\Metric;
+use Google\Analytics\Data\V1beta\Filter\StringFilter;
+use Google\Analytics\Data\V1beta\Filter\StringFilter\MatchType;
 use Google\Analytics\Data\V1beta\FilterExpression;
 use Google\Analytics\Data\V1beta\Filter;
-use Google\Analytics\Data\V1beta\StringFilter\MatchType;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -448,6 +449,16 @@ class Gappv_Admin {
 				)
 			);
 
+			$filter = new FilterExpression([
+				'filter' =>  new Filter([
+					'field_name' => 'pagePath',
+					'string_filter' => new StringFilter([
+						'match_type' => MatchType::EXACT,
+						'value' => $link,
+					])
+				])
+			]);
+
 			$response = $client->runReport(
 				array(
 					'property'          => 'properties/' . $options['property-id'],
@@ -473,13 +484,17 @@ class Gappv_Admin {
 							)
 						),
 					),
-					'filtersExpression' => 'pagePath == "' . $link . '"',
+					'dimensionFilter' => $filter,
+					'metricAggregations' => [1],
+					'sampling' => 'LARGE',
 				)
 			);
 
 			$views = 0;
-			if ( isset( $response ) ) {
+
+			if (count($response->getRows()) > 0) {
 				$views = $response->getRows()[0]->getMetricValues()[0]->getValue();
+
 				/**
 				if ( $views >= 1000000 ) {
 					$views = round( $views / 1000000, 1 ) . 'm';
@@ -493,7 +508,7 @@ class Gappv_Admin {
 				$views = number_format_i18n( $views );
 	
 				set_transient( $transient, $views, $options['cache-time'] * HOUR_IN_SECONDS );
-	
+
 			}
 
 			return $views;
