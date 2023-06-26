@@ -80,22 +80,21 @@ class Gappv_Admin {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Gappv_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Gappv_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		if ( is_admin() && get_current_screen()->id === 'edit-post' ) {
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/gappv-admin.js', array( 'jquery' ), $this->version, false );
 		}
 
+	}
+
+	/**
+	 * Adds inline CSS to the head of the admin page
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_inline_css() {
+		if ( is_admin() && get_current_screen()->id === 'edit-post' ) {
+			echo '<style>.column-gappv{width:120px}</style>';
+		}
 	}
 
 	/**
@@ -135,7 +134,6 @@ class Gappv_Admin {
 	public function gappv_settings() {
 		include plugin_dir_path( __FILE__ ) . 'partials/gappv-admin-display.php';
 	}
-
 
 	/**
 	 * Validates saved options
@@ -385,7 +383,7 @@ class Gappv_Admin {
 			case 'gappv':
 				$transient   = '_gappv-' . $post_id;
 				$total_views = get_transient( $transient );
-				$needs_views =  $total_views ? 'false' : 'true';
+				$needs_views = $total_views ? 'false' : 'true';
 				if ( ! $total_views ) {
 					$total_views = 0;
 				}
@@ -449,20 +447,26 @@ class Gappv_Admin {
 				)
 			);
 
-			$filter = new FilterExpression([
-				'filter' =>  new Filter([
-					'field_name' => 'pagePath',
-					'string_filter' => new StringFilter([
-						'match_type' => MatchType::EXACT,
-						'value' => $link,
-					])
-				])
-			]);
+			$filter = new FilterExpression(
+				array(
+					'filter' => new Filter(
+						array(
+							'field_name'    => 'pagePath',
+							'string_filter' => new StringFilter(
+								array(
+									'match_type' => MatchType::EXACT,
+									'value'      => $link,
+								)
+							),
+						)
+					),
+				)
+			);
 
 			$response = $client->runReport(
 				array(
-					'property'          => 'properties/' . $options['property-id'],
-					'dateRanges'        => array(
+					'property'           => 'properties/' . $options['property-id'],
+					'dateRanges'         => array(
 						new DateRange(
 							array(
 								'start_date' => $post_date,
@@ -470,29 +474,29 @@ class Gappv_Admin {
 							)
 						),
 					),
-					'dimensions'        => array(
+					'dimensions'         => array(
 						new Dimension(
 							array(
 								'name' => 'pagePath',
 							)
 						),
 					),
-					'metrics'           => array(
+					'metrics'            => array(
 						new Metric(
 							array(
 								'name' => 'screenPageViews',
 							)
 						),
 					),
-					'dimensionFilter' => $filter,
-					'metricAggregations' => [1],
-					'sampling' => 'LARGE',
+					'dimensionFilter'    => $filter,
+					'metricAggregations' => array( 1 ),
+					'sampling'           => 'LARGE',
 				)
 			);
 
 			$views = 0;
 
-			if (count($response->getRows()) > 0) {
+			if ( count( $response->getRows() ) > 0 ) {
 				$views = $response->getRows()[0]->getMetricValues()[0]->getValue();
 
 				/**
@@ -503,10 +507,10 @@ class Gappv_Admin {
 				} else {
 					$views = number_format_i18n( $views );
 				}
-				**/
+				*/
 
 				$views = number_format_i18n( $views );
-	
+
 				set_transient( $transient, $views, $options['cache-time'] * HOUR_IN_SECONDS );
 
 			}
@@ -518,6 +522,5 @@ class Gappv_Admin {
 		}
 
 	}
-
 
 }
