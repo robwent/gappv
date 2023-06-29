@@ -365,7 +365,7 @@ class Gappv_Admin {
 	public function manage_admin_columns( $columns ) {
 
 		if ( ! array_key_exists( 'gappv', $columns ) ) {
-			$columns['gappv'] = __( 'GA V4', 'iyba-data-import' );
+			$columns['gappv'] = __( 'GA Views', 'iyba-data-import' );
 		}
 
 		return $columns;
