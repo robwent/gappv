@@ -116,6 +116,13 @@ class Gappv {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-gappv-admin.php';
 
+		/**
+		 * Registers wp-cli commands
+		 */
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-gappv-wp-cli-commands.php';
+		}
+
 		$this->loader = new Gappv_Loader();
 
 	}

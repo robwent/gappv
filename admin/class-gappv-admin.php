@@ -471,7 +471,7 @@ class Gappv_Admin {
 		wp_die();
 	}
 
-	private function call_api( $post_id, $link, $post_date ) {
+	public function call_api( $post_id, $link, $post_date ) {
 
 		if ( get_post_status( $post_id ) !== 'publish' ) {
 			return 0;

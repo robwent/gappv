@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Google Analytics Post Page Views\n"
-"POT-Creation-Date: 2023-06-29 20:57+0100\n"
+"POT-Creation-Date: 2023-07-01 21:58+0100\n"
 "PO-Revision-Date: 2023-06-29 20:57+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -68,6 +68,15 @@ msgstr ""
 
 #: includes/class-gappv-sanitize.php:189
 msgid "Forgot data type"
+msgstr ""
+
+#: includes/class-gappv-wp-cli-commands.php:18
+msgid "Gappv_Admin Class does not exist!"
+msgstr ""
+
+#: includes/class-gappv-wp-cli-commands.php:43
+#, php-format
+msgid "Post Path: %1$s, Views: %2$d"
 msgstr ""
 
 #. Plugin Name of the plugin/theme
