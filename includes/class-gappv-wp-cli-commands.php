@@ -40,10 +40,9 @@ class Gappv_Wp_Cli_Commands extends WP_CLI_Command {
 				$link      = '/' . $basename . '/';
 				$post_date = get_the_date( 'Y-m-d', $post_id );
 				$views     = $gappv->call_api( $post_id, $link, $post_date );
-				WP_CLI::line( sprintf( __( 'Post Path: %1$s, Views: %2$d', 'gappv' ), $basename, $views ) );
+				WP_CLI::line( sprintf( __( 'Post Path: %1$s, Views: %2$d', 'gappv' ), $link, $views ) );
 			}
 		}
-		wp_reset_postdata();
 		wp_reset_postdata();
 	}
 
