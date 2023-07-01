@@ -384,6 +384,36 @@ class Gappv_Admin {
 	}
 
 	/**
+	 * Include posts with no value when sorting by views
+	 *
+	 * @param [type] $query
+	 * @return void
+	 */
+	public function sort_views_custom_column_query( $query ) {
+		global $pagenow;
+		if ( is_admin() && 'edit.php' == $pagenow ) {
+			$orderby = $query->get( 'orderby' );
+
+			if ( '_gappv_views' == $orderby ) {
+
+				$meta_query = array(
+					'relation' => 'OR',
+					array(
+						'key'     => '_gappv_views',
+						'compare' => 'NOT EXISTS',
+					),
+					array(
+						'key' => '_gappv_views',
+					),
+				);
+
+				$query->set( 'meta_query', $meta_query );
+				$query->set( 'orderby', 'meta_value_num' );
+			}
+		}
+	}
+
+	/**
 	 * Adds the column data specified above
 	 *
 	 * @param $column
