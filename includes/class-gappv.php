@@ -155,6 +155,7 @@ class Gappv {
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_sections' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_fields' );
 		$this->loader->add_filter( 'manage_posts_columns', $plugin_admin, 'manage_admin_columns' );
+		$this->loader->add_filter( 'manage_edit-post_sortable_columns', $plugin_admin, 'make_views_column_sortable' );
 		$this->loader->add_action( 'manage_posts_custom_column', $plugin_admin, 'custom_admin_columns', 10, 2 );
 		$this->loader->add_action( 'wp_ajax_gappv_ajax_views_update', $plugin_admin, 'ajax_views_update' );
 

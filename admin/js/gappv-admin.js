@@ -15,7 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 				xhr.onload = function() {
 					if (this.status === 200) {
-						element.innerHTML = this.responseText;
+						if(!isNaN(this.responseText)) {
+							element.innerHTML =  new Intl.NumberFormat('en-US').format(this.responseText);
+						} else {
+							element.innerHTML = this.responseText;
+						}
 					} else {
 						element.innerHTML = 'Error';
 					}

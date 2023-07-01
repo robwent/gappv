@@ -372,6 +372,18 @@ class Gappv_Admin {
 	}
 
 	/**
+	 * Make the views column sortable
+	 *
+	 * @param [type] $columns
+	 * @return void
+	 */
+	public function make_views_column_sortable( $columns ) {
+		$columns['gappv'] = '_gappv_views';
+
+		return $columns;
+	}
+
+	/**
 	 * Adds the column data specified above
 	 *
 	 * @param $column
@@ -385,9 +397,11 @@ class Gappv_Admin {
 				$total_views = get_transient( $transient );
 				$needs_views = $total_views ? 'false' : 'true';
 				if ( ! $total_views ) {
-					$total_views = 0;
+					// Check for postmeta and show that before the update.
+					$total_views = get_post_meta( $post_id, '_gappv_views', true );
+					$total_views = $total_views ?: 0;
 				}
-				echo '<span class="gappv-total-views" data-id="' . $post_id . '" data-update="' . $needs_views . '">' . $total_views . '</span>';
+				echo '<span class="gappv-total-views" data-id="' . $post_id . '" data-update="' . $needs_views . '">' . number_format_i18n( $total_views ) . '</span>';
 				break;
 
 		}
@@ -509,8 +523,7 @@ class Gappv_Admin {
 				}
 				*/
 
-				$views = number_format_i18n( $views );
-
+				update_post_meta( $post_id, '_gappv_views', $views );
 				set_transient( $transient, $views, $options['cache-time'] * HOUR_IN_SECONDS );
 
 			}
