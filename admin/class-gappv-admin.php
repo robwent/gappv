@@ -556,6 +556,8 @@ class Gappv_Admin {
 				update_post_meta( $post_id, '_gappv_views', $views );
 				set_transient( $transient, $views, $options['cache-time'] * HOUR_IN_SECONDS );
 
+			} else {
+				update_post_meta( $post_id, '_gappv_views', 0 );
 			}
 
 			return $views;

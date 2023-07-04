@@ -28,9 +28,9 @@ class Gappv_Wp_Cli_Commands extends WP_CLI_Command {
 				),
 			),
 			'posts_per_page' => 10,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
 		);
-		$args['orderby'] = 'date';
-		$args['order']   = 'DESC';
 		$query           = new WP_Query( $args );
 		$output          = '';
 		if ( $query->have_posts() ) {
