@@ -456,8 +456,7 @@ class Gappv_Admin {
 			return $total_views;
 		}
 
-		$basename  = basename( get_permalink( $post_id ) );
-		$link      = '/' . $basename . '/';
+		$link 	= wp_make_link_relative( get_permalink( $post_id ) );
 		$post_date = get_the_date( 'Y-m-d', $post_id );
 
 		if ( isset( $options['start-date'] ) && strtotime( $post_date ) < strtotime( $options['start-date'] ) ) {
