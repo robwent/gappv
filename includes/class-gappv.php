@@ -157,14 +157,22 @@ class Gappv {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_head', $plugin_admin, 'add_inline_css' );
+		$this->loader->add_action( 'admin_notices', $plugin_admin, 'requirements_notice' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_settings' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_sections' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_fields' );
 		$this->loader->add_filter( 'manage_posts_columns', $plugin_admin, 'manage_admin_columns' );
-		$this->loader->add_filter( 'manage_edit-post_sortable_columns', $plugin_admin, 'make_views_column_sortable' );
+		$this->loader->add_filter( 'manage_pages_columns', $plugin_admin, 'manage_admin_columns' );
+		// Sortable columns for enabled post types and columns for enabled
+		// taxonomies are screen-specific hooks, so they are registered on
+		// admin_init once post types and taxonomies exist.
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'register_dynamic_hooks' );
+
 		$this->loader->add_action( 'manage_posts_custom_column', $plugin_admin, 'custom_admin_columns', 10, 2 );
+		$this->loader->add_action( 'manage_pages_custom_column', $plugin_admin, 'custom_admin_columns', 10, 2 );
 		$this->loader->add_action( 'pre_get_posts', $plugin_admin, 'sort_views_custom_column_query' );
+		$this->loader->add_action( 'pre_get_terms', $plugin_admin, 'sort_terms_by_views' );
 		$this->loader->add_action( 'wp_ajax_gappv_ajax_views_update', $plugin_admin, 'ajax_views_update' );
 
 	}

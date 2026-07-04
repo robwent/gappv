@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * The batch request containing multiple report requests.
@@ -16,7 +16,7 @@ use Google\Protobuf\Internal\GPBUtil;
 class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
 {
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked.
+     * A Google Analytics property identifier whose events are tracked.
      * Specified in the URL path and not the body. To learn more, see [where to
      * find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
@@ -27,7 +27,7 @@ class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string property = 1;</code>
      */
-    private $property = '';
+    protected $property = '';
     /**
      * Individual requests. Each request has a separate report response. Each
      * batch request is allowed up to 5 requests.
@@ -43,7 +43,7 @@ class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $property
-     *           A Google Analytics GA4 property identifier whose events are tracked.
+     *           A Google Analytics property identifier whose events are tracked.
      *           Specified in the URL path and not the body. To learn more, see [where to
      *           find your Property
      *           ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
@@ -51,7 +51,7 @@ class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
      *           RunReportRequest may either be unspecified or consistent with this
      *           property.
      *           Example: properties/1234
-     *     @type array<\Google\Analytics\Data\V1beta\RunReportRequest>|\Google\Protobuf\Internal\RepeatedField $requests
+     *     @type \Google\Analytics\Data\V1beta\RunReportRequest[] $requests
      *           Individual requests. Each request has a separate report response. Each
      *           batch request is allowed up to 5 requests.
      * }
@@ -62,7 +62,7 @@ class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked.
+     * A Google Analytics property identifier whose events are tracked.
      * Specified in the URL path and not the body. To learn more, see [where to
      * find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
@@ -80,7 +80,7 @@ class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked.
+     * A Google Analytics property identifier whose events are tracked.
      * Specified in the URL path and not the body. To learn more, see [where to
      * find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
@@ -106,7 +106,7 @@ class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
      * batch request is allowed up to 5 requests.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.RunReportRequest requests = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\RunReportRequest>
      */
     public function getRequests()
     {
@@ -118,7 +118,7 @@ class BatchRunReportsRequest extends \Google\Protobuf\Internal\Message
      * batch request is allowed up to 5 requests.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.RunReportRequest requests = 2;</code>
-     * @param array<\Google\Analytics\Data\V1beta\RunReportRequest>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\RunReportRequest[] $var
      * @return $this
      */
     public function setRequests($var)

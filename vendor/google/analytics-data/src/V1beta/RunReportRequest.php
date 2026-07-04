@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * The request to generate a report.
@@ -16,7 +16,7 @@ use Google\Protobuf\Internal\GPBUtil;
 class RunReportRequest extends \Google\Protobuf\Internal\Message
 {
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked.
+     * A Google Analytics property identifier whose events are tracked.
      * Specified in the URL path and not the body. To learn more, see [where to
      * find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
@@ -26,7 +26,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string property = 1;</code>
      */
-    private $property = '';
+    protected $property = '';
     /**
      * The dimensions requested and displayed.
      *
@@ -50,21 +50,21 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      */
     private $date_ranges;
     /**
-     * Dimension filters allow you to ask for only specific dimension values in
+     * Dimension filters let you ask for only specific dimension values in
      * the report. To learn more, see [Fundamentals of Dimension
      * Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
      * for examples. Metrics cannot be used in this filter.
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.FilterExpression dimension_filter = 5;</code>
      */
-    private $dimension_filter = null;
+    protected $dimension_filter = null;
     /**
      * The filter clause of metrics. Applied after aggregating the report's rows,
      * similar to SQL having-clause. Dimensions cannot be used in this filter.
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.FilterExpression metric_filter = 6;</code>
      */
-    private $metric_filter = null;
+    protected $metric_filter = null;
     /**
      * The row count of the start row. The first row is counted as row 0.
      * When paging, the first request does not specify offset; or equivalently,
@@ -76,10 +76,10 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>int64 offset = 7;</code>
      */
-    private $offset = 0;
+    protected $offset = 0;
     /**
      * The number of rows to return. If unspecified, 10,000 rows are returned. The
-     * API returns a maximum of 100,000 rows per request, no matter how many you
+     * API returns a maximum of 250,000 rows per request, no matter how many you
      * ask for. `limit` must be positive.
      * The API can also return fewer rows than the requested `limit`, if there
      * aren't as many dimension values as the `limit`. For instance, there are
@@ -91,16 +91,20 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>int64 limit = 8;</code>
      */
-    private $limit = 0;
+    protected $limit = 0;
     /**
      * Aggregation of metrics. Aggregated metric values will be shown in rows
      * where the dimension_values are set to "RESERVED_(MetricAggregation)".
+     * Aggregates including both comparisons and multiple date ranges will
+     * be aggregated based on the date ranges.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricAggregation metric_aggregations = 9;</code>
      */
     private $metric_aggregations;
     /**
      * Specifies how rows are ordered in the response.
+     * Requests including both comparisons and multiple date ranges will
+     * have order bys applied on the comparisons.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.OrderBy order_bys = 10;</code>
      */
@@ -111,29 +115,42 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string currency_code = 11;</code>
      */
-    private $currency_code = '';
+    protected $currency_code = '';
     /**
      * Cohort group associated with this request. If there is a cohort group
      * in the request the 'cohort' dimension must be present.
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.CohortSpec cohort_spec = 12;</code>
      */
-    private $cohort_spec = null;
+    protected $cohort_spec = null;
     /**
      * If false or unspecified, each row with all metrics equal to 0 will not be
      * returned. If true, these rows will be returned if they are not separately
      * removed by a filter.
+     * Regardless of this `keep_empty_rows` setting, only data recorded by the
+     * Google Analytics property can be displayed in a report.
+     * For example if a property never logs a `purchase` event, then a query for
+     * the `eventName` dimension and  `eventCount` metric will not have a row
+     * eventName: "purchase" and eventCount: 0.
      *
      * Generated from protobuf field <code>bool keep_empty_rows = 13;</code>
      */
-    private $keep_empty_rows = false;
+    protected $keep_empty_rows = false;
     /**
-     * Toggles whether to return the current state of this Analytics Property's
-     * quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+     * Toggles whether to return the current state of this Google Analytics
+     * property's quota. Quota is returned in [PropertyQuota](#PropertyQuota).
      *
      * Generated from protobuf field <code>bool return_property_quota = 14;</code>
      */
-    private $return_property_quota = false;
+    protected $return_property_quota = false;
+    /**
+     * Optional. The configuration of comparisons requested and displayed. The
+     * request only requires a comparisons field in order to receive a comparison
+     * column in the response.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Comparison comparisons = 15 [(.google.api.field_behavior) = OPTIONAL];</code>
+     */
+    private $comparisons;
 
     /**
      * Constructor.
@@ -142,25 +159,25 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $property
-     *           A Google Analytics GA4 property identifier whose events are tracked.
+     *           A Google Analytics property identifier whose events are tracked.
      *           Specified in the URL path and not the body. To learn more, see [where to
      *           find your Property
      *           ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
      *           Within a batch request, this property should either be unspecified or
      *           consistent with the batch-level property.
      *           Example: properties/1234
-     *     @type array<\Google\Analytics\Data\V1beta\Dimension>|\Google\Protobuf\Internal\RepeatedField $dimensions
+     *     @type \Google\Analytics\Data\V1beta\Dimension[] $dimensions
      *           The dimensions requested and displayed.
-     *     @type array<\Google\Analytics\Data\V1beta\Metric>|\Google\Protobuf\Internal\RepeatedField $metrics
+     *     @type \Google\Analytics\Data\V1beta\Metric[] $metrics
      *           The metrics requested and displayed.
-     *     @type array<\Google\Analytics\Data\V1beta\DateRange>|\Google\Protobuf\Internal\RepeatedField $date_ranges
+     *     @type \Google\Analytics\Data\V1beta\DateRange[] $date_ranges
      *           Date ranges of data to read. If multiple date ranges are requested, each
      *           response row will contain a zero based date range index. If two date
      *           ranges overlap, the event data for the overlapping days is included in the
      *           response rows for both date ranges. In a cohort request, this `dateRanges`
      *           must be unspecified.
      *     @type \Google\Analytics\Data\V1beta\FilterExpression $dimension_filter
-     *           Dimension filters allow you to ask for only specific dimension values in
+     *           Dimension filters let you ask for only specific dimension values in
      *           the report. To learn more, see [Fundamentals of Dimension
      *           Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
      *           for examples. Metrics cannot be used in this filter.
@@ -177,7 +194,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *           [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
      *     @type int|string $limit
      *           The number of rows to return. If unspecified, 10,000 rows are returned. The
-     *           API returns a maximum of 100,000 rows per request, no matter how many you
+     *           API returns a maximum of 250,000 rows per request, no matter how many you
      *           ask for. `limit` must be positive.
      *           The API can also return fewer rows than the requested `limit`, if there
      *           aren't as many dimension values as the `limit`. For instance, there are
@@ -186,11 +203,15 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *           set `limit` to a higher value.
      *           To learn more about this pagination parameter, see
      *           [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
-     *     @type array<int>|\Google\Protobuf\Internal\RepeatedField $metric_aggregations
+     *     @type int[] $metric_aggregations
      *           Aggregation of metrics. Aggregated metric values will be shown in rows
      *           where the dimension_values are set to "RESERVED_(MetricAggregation)".
-     *     @type array<\Google\Analytics\Data\V1beta\OrderBy>|\Google\Protobuf\Internal\RepeatedField $order_bys
+     *           Aggregates including both comparisons and multiple date ranges will
+     *           be aggregated based on the date ranges.
+     *     @type \Google\Analytics\Data\V1beta\OrderBy[] $order_bys
      *           Specifies how rows are ordered in the response.
+     *           Requests including both comparisons and multiple date ranges will
+     *           have order bys applied on the comparisons.
      *     @type string $currency_code
      *           A currency code in ISO4217 format, such as "AED", "USD", "JPY".
      *           If the field is empty, the report uses the property's default currency.
@@ -201,9 +222,18 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      *           If false or unspecified, each row with all metrics equal to 0 will not be
      *           returned. If true, these rows will be returned if they are not separately
      *           removed by a filter.
+     *           Regardless of this `keep_empty_rows` setting, only data recorded by the
+     *           Google Analytics property can be displayed in a report.
+     *           For example if a property never logs a `purchase` event, then a query for
+     *           the `eventName` dimension and  `eventCount` metric will not have a row
+     *           eventName: "purchase" and eventCount: 0.
      *     @type bool $return_property_quota
-     *           Toggles whether to return the current state of this Analytics Property's
-     *           quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+     *           Toggles whether to return the current state of this Google Analytics
+     *           property's quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+     *     @type \Google\Analytics\Data\V1beta\Comparison[] $comparisons
+     *           Optional. The configuration of comparisons requested and displayed. The
+     *           request only requires a comparisons field in order to receive a comparison
+     *           column in the response.
      * }
      */
     public function __construct($data = NULL) {
@@ -212,7 +242,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked.
+     * A Google Analytics property identifier whose events are tracked.
      * Specified in the URL path and not the body. To learn more, see [where to
      * find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
@@ -229,7 +259,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked.
+     * A Google Analytics property identifier whose events are tracked.
      * Specified in the URL path and not the body. To learn more, see [where to
      * find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
@@ -253,7 +283,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * The dimensions requested and displayed.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Dimension dimensions = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\Dimension>
      */
     public function getDimensions()
     {
@@ -264,7 +294,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * The dimensions requested and displayed.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Dimension dimensions = 2;</code>
-     * @param array<\Google\Analytics\Data\V1beta\Dimension>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\Dimension[] $var
      * @return $this
      */
     public function setDimensions($var)
@@ -279,7 +309,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * The metrics requested and displayed.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Metric metrics = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\Metric>
      */
     public function getMetrics()
     {
@@ -290,7 +320,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * The metrics requested and displayed.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Metric metrics = 3;</code>
-     * @param array<\Google\Analytics\Data\V1beta\Metric>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\Metric[] $var
      * @return $this
      */
     public function setMetrics($var)
@@ -309,7 +339,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * must be unspecified.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.DateRange date_ranges = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\DateRange>
      */
     public function getDateRanges()
     {
@@ -324,7 +354,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * must be unspecified.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.DateRange date_ranges = 4;</code>
-     * @param array<\Google\Analytics\Data\V1beta\DateRange>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\DateRange[] $var
      * @return $this
      */
     public function setDateRanges($var)
@@ -336,7 +366,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Dimension filters allow you to ask for only specific dimension values in
+     * Dimension filters let you ask for only specific dimension values in
      * the report. To learn more, see [Fundamentals of Dimension
      * Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
      * for examples. Metrics cannot be used in this filter.
@@ -360,7 +390,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Dimension filters allow you to ask for only specific dimension values in
+     * Dimension filters let you ask for only specific dimension values in
      * the report. To learn more, see [Fundamentals of Dimension
      * Filters](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters)
      * for examples. Metrics cannot be used in this filter.
@@ -455,7 +485,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
 
     /**
      * The number of rows to return. If unspecified, 10,000 rows are returned. The
-     * API returns a maximum of 100,000 rows per request, no matter how many you
+     * API returns a maximum of 250,000 rows per request, no matter how many you
      * ask for. `limit` must be positive.
      * The API can also return fewer rows than the requested `limit`, if there
      * aren't as many dimension values as the `limit`. For instance, there are
@@ -475,7 +505,7 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
 
     /**
      * The number of rows to return. If unspecified, 10,000 rows are returned. The
-     * API returns a maximum of 100,000 rows per request, no matter how many you
+     * API returns a maximum of 250,000 rows per request, no matter how many you
      * ask for. `limit` must be positive.
      * The API can also return fewer rows than the requested `limit`, if there
      * aren't as many dimension values as the `limit`. For instance, there are
@@ -500,9 +530,11 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     /**
      * Aggregation of metrics. Aggregated metric values will be shown in rows
      * where the dimension_values are set to "RESERVED_(MetricAggregation)".
+     * Aggregates including both comparisons and multiple date ranges will
+     * be aggregated based on the date ranges.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricAggregation metric_aggregations = 9;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<int>
      */
     public function getMetricAggregations()
     {
@@ -512,9 +544,11 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     /**
      * Aggregation of metrics. Aggregated metric values will be shown in rows
      * where the dimension_values are set to "RESERVED_(MetricAggregation)".
+     * Aggregates including both comparisons and multiple date ranges will
+     * be aggregated based on the date ranges.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricAggregation metric_aggregations = 9;</code>
-     * @param array<int>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param int[] $var
      * @return $this
      */
     public function setMetricAggregations($var)
@@ -527,9 +561,11 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
 
     /**
      * Specifies how rows are ordered in the response.
+     * Requests including both comparisons and multiple date ranges will
+     * have order bys applied on the comparisons.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.OrderBy order_bys = 10;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\OrderBy>
      */
     public function getOrderBys()
     {
@@ -538,9 +574,11 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
 
     /**
      * Specifies how rows are ordered in the response.
+     * Requests including both comparisons and multiple date ranges will
+     * have order bys applied on the comparisons.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.OrderBy order_bys = 10;</code>
-     * @param array<\Google\Analytics\Data\V1beta\OrderBy>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\OrderBy[] $var
      * @return $this
      */
     public function setOrderBys($var)
@@ -621,6 +659,11 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * If false or unspecified, each row with all metrics equal to 0 will not be
      * returned. If true, these rows will be returned if they are not separately
      * removed by a filter.
+     * Regardless of this `keep_empty_rows` setting, only data recorded by the
+     * Google Analytics property can be displayed in a report.
+     * For example if a property never logs a `purchase` event, then a query for
+     * the `eventName` dimension and  `eventCount` metric will not have a row
+     * eventName: "purchase" and eventCount: 0.
      *
      * Generated from protobuf field <code>bool keep_empty_rows = 13;</code>
      * @return bool
@@ -634,6 +677,11 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
      * If false or unspecified, each row with all metrics equal to 0 will not be
      * returned. If true, these rows will be returned if they are not separately
      * removed by a filter.
+     * Regardless of this `keep_empty_rows` setting, only data recorded by the
+     * Google Analytics property can be displayed in a report.
+     * For example if a property never logs a `purchase` event, then a query for
+     * the `eventName` dimension and  `eventCount` metric will not have a row
+     * eventName: "purchase" and eventCount: 0.
      *
      * Generated from protobuf field <code>bool keep_empty_rows = 13;</code>
      * @param bool $var
@@ -648,8 +696,8 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Toggles whether to return the current state of this Analytics Property's
-     * quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+     * Toggles whether to return the current state of this Google Analytics
+     * property's quota. Quota is returned in [PropertyQuota](#PropertyQuota).
      *
      * Generated from protobuf field <code>bool return_property_quota = 14;</code>
      * @return bool
@@ -660,8 +708,8 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Toggles whether to return the current state of this Analytics Property's
-     * quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+     * Toggles whether to return the current state of this Google Analytics
+     * property's quota. Quota is returned in [PropertyQuota](#PropertyQuota).
      *
      * Generated from protobuf field <code>bool return_property_quota = 14;</code>
      * @param bool $var
@@ -671,6 +719,36 @@ class RunReportRequest extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkBool($var);
         $this->return_property_quota = $var;
+
+        return $this;
+    }
+
+    /**
+     * Optional. The configuration of comparisons requested and displayed. The
+     * request only requires a comparisons field in order to receive a comparison
+     * column in the response.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Comparison comparisons = 15 [(.google.api.field_behavior) = OPTIONAL];</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\Comparison>
+     */
+    public function getComparisons()
+    {
+        return $this->comparisons;
+    }
+
+    /**
+     * Optional. The configuration of comparisons requested and displayed. The
+     * request only requires a comparisons field in order to receive a comparison
+     * column in the response.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Comparison comparisons = 15 [(.google.api.field_behavior) = OPTIONAL];</code>
+     * @param \Google\Analytics\Data\V1beta\Comparison[] $var
+     * @return $this
+     */
+    public function setComparisons($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Google\Analytics\Data\V1beta\Comparison::class);
+        $this->comparisons = $arr;
 
         return $this;
     }

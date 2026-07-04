@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Defines a cohort selection criteria. A cohort is a group of users who share
@@ -25,14 +25,14 @@ class Cohort extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string name = 1;</code>
      */
-    private $name = '';
+    protected $name = '';
     /**
      * Dimension used by the cohort. Required and only supports
      * `firstSessionDate`.
      *
      * Generated from protobuf field <code>string dimension = 2;</code>
      */
-    private $dimension = '';
+    protected $dimension = '';
     /**
      * The cohort selects users whose first touch date is between start date and
      * end date defined in the `dateRange`. This `dateRange` does not specify the
@@ -51,7 +51,7 @@ class Cohort extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.DateRange date_range = 3;</code>
      */
-    private $date_range = null;
+    protected $date_range = null;
 
     /**
      * Constructor.

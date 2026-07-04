@@ -29,3 +29,19 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+global $wpdb;
+
+// Plugin settings.
+delete_option( 'gappv-options' );
+
+// Cached view counts for posts (_gappv-{id}) and terms (_gappv-term-{id}).
+$wpdb->query(
+	"DELETE FROM {$wpdb->options}
+	WHERE option_name LIKE '\_transient\_\_gappv-%'
+	OR option_name LIKE '\_transient\_timeout\_\_gappv-%'"
+);
+
+// Stored view counts.
+$wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_gappv_views' ) );
+$wpdb->delete( $wpdb->termmeta, array( 'meta_key' => '_gappv_views' ) );

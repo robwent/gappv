@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta\OrderBy;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Sorts by dimension values.
@@ -20,13 +20,13 @@ class DimensionOrderBy extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string dimension_name = 1;</code>
      */
-    private $dimension_name = '';
+    protected $dimension_name = '';
     /**
      * Controls the rule for dimension value ordering.
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.OrderBy.DimensionOrderBy.OrderType order_type = 2;</code>
      */
-    private $order_type = 0;
+    protected $order_type = 0;
 
     /**
      * Constructor.
@@ -98,5 +98,4 @@ class DimensionOrderBy extends \Google\Protobuf\Internal\Message
     }
 
 }
-
 

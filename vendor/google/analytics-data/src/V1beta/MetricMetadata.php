@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Explains a metric.
@@ -21,20 +21,20 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string api_name = 1;</code>
      */
-    private $api_name = '';
+    protected $api_name = '';
     /**
      * This metric's name within the Google Analytics user interface. For example,
      * `Event count`.
      *
      * Generated from protobuf field <code>string ui_name = 2;</code>
      */
-    private $ui_name = '';
+    protected $ui_name = '';
     /**
      * Description of how this metric is used and calculated.
      *
      * Generated from protobuf field <code>string description = 3;</code>
      */
-    private $description = '';
+    protected $description = '';
     /**
      * Still usable but deprecated names for this metric. If populated, this
      * metric is available by either `apiName` or one of `deprecatedApiNames`
@@ -49,7 +49,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.MetricType type = 5;</code>
      */
-    private $type = 0;
+    protected $type = 0;
     /**
      * The mathematical expression for this derived metric. Can be used in
      * [Metric](#Metric)'s `expression` field for equivalent reports. Most metrics
@@ -57,13 +57,13 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string expression = 6;</code>
      */
-    private $expression = '';
+    protected $expression = '';
     /**
      * True if the metric is a custom metric for this property.
      *
      * Generated from protobuf field <code>bool custom_definition = 7;</code>
      */
-    private $custom_definition = false;
+    protected $custom_definition = false;
     /**
      * If reasons are specified, your access is blocked to this metric for this
      * property. API requests from you to this property for this metric will
@@ -82,7 +82,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string category = 10;</code>
      */
-    private $category = '';
+    protected $category = '';
 
     /**
      * Constructor.
@@ -98,7 +98,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *           `Event count`.
      *     @type string $description
      *           Description of how this metric is used and calculated.
-     *     @type array<string>|\Google\Protobuf\Internal\RepeatedField $deprecated_api_names
+     *     @type string[] $deprecated_api_names
      *           Still usable but deprecated names for this metric. If populated, this
      *           metric is available by either `apiName` or one of `deprecatedApiNames`
      *           for a period of time. After the deprecation period, the metric will be
@@ -111,7 +111,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *           are not expressions, and for non-expressions, this field is empty.
      *     @type bool $custom_definition
      *           True if the metric is a custom metric for this property.
-     *     @type array<int>|\Google\Protobuf\Internal\RepeatedField $blocked_reasons
+     *     @type int[] $blocked_reasons
      *           If reasons are specified, your access is blocked to this metric for this
      *           property. API requests from you to this property for this metric will
      *           succeed; however, the report will contain only zeros for this metric. API
@@ -218,7 +218,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      * available only by `apiName`.
      *
      * Generated from protobuf field <code>repeated string deprecated_api_names = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<string>
      */
     public function getDeprecatedApiNames()
     {
@@ -232,7 +232,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      * available only by `apiName`.
      *
      * Generated from protobuf field <code>repeated string deprecated_api_names = 4;</code>
-     * @param array<string>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[] $var
      * @return $this
      */
     public function setDeprecatedApiNames($var)
@@ -335,7 +335,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      * management](https://support.google.com/analytics/answer/10851388).
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricMetadata.BlockedReason blocked_reasons = 8;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<int>
      */
     public function getBlockedReasons()
     {
@@ -352,7 +352,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      * management](https://support.google.com/analytics/answer/10851388).
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricMetadata.BlockedReason blocked_reasons = 8;</code>
-     * @param array<int>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param int[] $var
      * @return $this
      */
     public function setBlockedReasons($var)

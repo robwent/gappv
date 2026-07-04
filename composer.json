@@ -1,5 +1,5 @@
 {
     "require": {
-        "google/analytics-data": "^0.10.1"
+        "google/analytics-data": "^0.24.0"
     }
 }

@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1alpha;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Current state for a particular quota group.
@@ -20,13 +20,13 @@ class QuotaStatus extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>int32 consumed = 1;</code>
      */
-    private $consumed = 0;
+    protected $consumed = 0;
     /**
      * Quota remaining after this request.
      *
      * Generated from protobuf field <code>int32 remaining = 2;</code>
      */
-    private $remaining = 0;
+    protected $remaining = 0;
 
     /**
      * Constructor.

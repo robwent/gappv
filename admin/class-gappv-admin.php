@@ -1,6 +1,6 @@
 <?php
 
-use Google\Analytics\Data\V1beta\BetaAnalyticsDataClient;
+use Google\Analytics\Data\V1beta\Client\BetaAnalyticsDataClient;
 use Google\Analytics\Data\V1beta\DateRange;
 use Google\Analytics\Data\V1beta\Dimension;
 use Google\Analytics\Data\V1beta\Metric;
@@ -8,6 +8,8 @@ use Google\Analytics\Data\V1beta\Filter\StringFilter;
 use Google\Analytics\Data\V1beta\Filter\StringFilter\MatchType;
 use Google\Analytics\Data\V1beta\FilterExpression;
 use Google\Analytics\Data\V1beta\Filter;
+use Google\Analytics\Data\V1beta\MetricAggregation;
+use Google\Analytics\Data\V1beta\RunReportRequest;
 
 /**
  * The admin-specific functionality of the plugin.
@@ -73,17 +75,144 @@ class Gappv_Admin {
 
 	}
 
+	public function should_run() {
+		if ( is_admin() ) {
+			// Get the current screen
+			$screen = get_current_screen();
+
+			if ( ! $screen ) {
+				return false;
+			}
+
+			// Post type listing pages for enabled post types
+			if ( $screen->base == 'edit' && post_type_exists( $screen->post_type ) ) {
+				return $this->is_post_type_enabled( $screen->post_type );
+			}
+
+			// Term listing pages for enabled taxonomies
+			if ( $screen->base == 'edit-tags' && ! empty( $screen->taxonomy ) ) {
+				return $this->is_taxonomy_enabled( $screen->taxonomy );
+			}
+
+			return false;
+		}
+		return false;
+	}
+
+	/**
+	 * Returns the post types the views column is enabled for.
+	 *
+	 * An empty setting means all public post types (the behaviour before the
+	 * setting existed).
+	 *
+	 * @return array Array of post type names.
+	 */
+	public function get_enabled_post_types() {
+		if ( ! empty( $this->options['enabled-post-types'] ) && is_array( $this->options['enabled-post-types'] ) ) {
+			return $this->options['enabled-post-types'];
+		}
+
+		return array_values( get_post_types( array( 'public' => true ), 'names' ) );
+	}
+
+	/**
+	 * Returns the taxonomies the views column is enabled for.
+	 *
+	 * Empty by default - taxonomies are opt-in.
+	 *
+	 * @return array Array of taxonomy names.
+	 */
+	public function get_enabled_taxonomies() {
+		if ( ! empty( $this->options['enabled-taxonomies'] ) && is_array( $this->options['enabled-taxonomies'] ) ) {
+			return $this->options['enabled-taxonomies'];
+		}
+
+		return array();
+	}
+
+	/**
+	 * Whether the views column should show for a post type.
+	 *
+	 * @param string $post_type The post type name.
+	 * @return bool
+	 */
+	public function is_post_type_enabled( $post_type ) {
+		if ( ! empty( $this->options['enabled-post-types'] ) && is_array( $this->options['enabled-post-types'] ) ) {
+			return in_array( $post_type, $this->options['enabled-post-types'], true );
+		}
+
+		// No setting saved: default to all public post types.
+		$post_type_object = get_post_type_object( $post_type );
+
+		return $post_type_object && $post_type_object->public;
+	}
+
+	/**
+	 * Whether the views column should show for a taxonomy.
+	 *
+	 * @param string $taxonomy The taxonomy name.
+	 * @return bool
+	 */
+	public function is_taxonomy_enabled( $taxonomy ) {
+		return in_array( $taxonomy, $this->get_enabled_taxonomies(), true );
+	}
+
+	/**
+	 * Registers the screen-specific column hooks for the enabled post types
+	 * and taxonomies. Runs on admin_init so all post types/taxonomies are
+	 * registered by the time the lists are read.
+	 */
+	public function register_dynamic_hooks() {
+		foreach ( $this->get_enabled_post_types() as $post_type ) {
+			add_filter( "manage_edit-{$post_type}_sortable_columns", array( $this, 'make_views_column_sortable' ) );
+		}
+
+		foreach ( $this->get_enabled_taxonomies() as $taxonomy ) {
+			add_filter( "manage_edit-{$taxonomy}_columns", array( $this, 'manage_admin_columns' ) );
+			add_filter( "manage_{$taxonomy}_custom_column", array( $this, 'custom_taxonomy_column' ), 10, 3 );
+			add_filter( "manage_edit-{$taxonomy}_sortable_columns", array( $this, 'make_views_column_sortable' ) );
+		}
+	}
+
 	/**
 	 * Register the JavaScript for the admin area.
 	 *
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		if ( is_admin() && get_current_screen()->id === 'edit-post' ) {
+		if ( $this->should_run() ) {
 			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/gappv-admin.js', array( 'jquery' ), $this->version, false );
+			wp_localize_script(
+				$this->plugin_name,
+				'gappv_ajax',
+				array(
+					'nonce' => wp_create_nonce( 'gappv_ajax_views_update' ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Warns when the PHP extensions the Google client library depends on are
+	 * missing. The bundled protobuf library needs either the protobuf
+	 * extension or bcmath - without them every API call is a fatal error.
+	 */
+	public function requirements_notice() {
+		if ( extension_loaded( 'bcmath' ) || extension_loaded( 'protobuf' ) ) {
+			return;
 		}
 
+		$screen = get_current_screen();
+		if ( ! $screen ) {
+			return;
+		}
+
+		// Only nag where it matters: our settings page and enabled list screens.
+		if ( 'settings_page_gappv-options' !== $screen->id && ! $this->should_run() ) {
+			return;
+		}
+
+		echo '<div class="notice notice-error"><p>' . esc_html__( 'GAPPV: the PHP bcmath extension (or the protobuf extension) is required to query the Google Analytics API. View counts cannot be fetched until it is installed.', 'gappv' ) . '</p></div>';
 	}
 
 	/**
@@ -92,7 +221,7 @@ class Gappv_Admin {
 	 * @since    1.0.0
 	 */
 	public function add_inline_css() {
-		if ( is_admin() && get_current_screen()->id === 'edit-post' ) {
+		if ( $this->should_run() ) {
 			echo '<style>.column-gappv{width:120px}</style>';
 		}
 	}
@@ -151,7 +280,8 @@ class Gappv_Admin {
 
 			$name                = $option[0];
 			$type                = $option[1];
-			$valid[ $option[0] ] = $this->sanitizer( $type, $input[ $name ] );
+			$value               = isset( $input[ $name ] ) ? $input[ $name ] : null;
+			$valid[ $option[0] ] = $this->sanitizer( $type, $value );
 
 		}
 
@@ -186,6 +316,8 @@ class Gappv_Admin {
 		$options[] = array( 'property-id', 'text', '' );
 		$options[] = array( 'start-date', 'text', '' );
 		$options[] = array( 'cache-time', 'text', '' );
+		$options[] = array( 'enabled-post-types', 'array', array() );
+		$options[] = array( 'enabled-taxonomies', 'array', array() );
 
 		return $options;
 	}
@@ -255,6 +387,52 @@ class Gappv_Admin {
 		}
 
 		include plugin_dir_path( __FILE__ ) . 'partials/' . $this->plugin_name . '-admin-field-textarea.php';
+
+	}
+
+	/**
+	 * Creates a list of checkboxes
+	 *
+	 * Expects $args['options'] as value => label pairs, or $args['source'] set
+	 * to 'post_types' / 'taxonomies' to build the list from the registered
+	 * public post types / taxonomies.
+	 *
+	 * @param array $args The arguments for the field
+	 *
+	 * @return    string                        The HTML field
+	 */
+	public function field_checkbox_list( $args ) {
+
+		$defaults['description'] = '';
+		$defaults['label']       = '';
+		$defaults['name']        = $this->plugin_name . '-options[' . $args['id'] . '][]';
+		$defaults['options']     = array();
+		$defaults['source']      = '';
+		$defaults['value']       = array();
+
+		apply_filters( $this->plugin_name . '-field-checkbox-list-options-defaults', $defaults );
+
+		$atts = wp_parse_args( $args, $defaults );
+
+		if ( empty( $atts['options'] ) && ! empty( $atts['source'] ) ) {
+			$objects = array();
+			if ( 'post_types' === $atts['source'] ) {
+				$objects = get_post_types( array( 'public' => true ), 'objects' );
+			} elseif ( 'taxonomies' === $atts['source'] ) {
+				$objects = get_taxonomies( array( 'public' => true ), 'objects' );
+			}
+			foreach ( $objects as $object ) {
+				$atts['options'][ $object->name ] = $object->labels->name . ' (' . $object->name . ')';
+			}
+		}
+
+		if ( ! empty( $this->options[ $atts['id'] ] ) && is_array( $this->options[ $atts['id'] ] ) ) {
+
+			$atts['value'] = $this->options[ $atts['id'] ];
+
+		}
+
+		include plugin_dir_path( __FILE__ ) . 'partials/' . $this->plugin_name . '-admin-field-checkbox-list.php';
 
 	}
 
@@ -353,6 +531,34 @@ class Gappv_Admin {
 			)
 		);
 
+		add_settings_field(
+			'enabled-post-types',
+			esc_html__( 'Post Types', 'gappv' ),
+			array( $this, 'field_checkbox_list' ),
+			$this->plugin_name,
+			$this->plugin_name . '-config',
+			array(
+				'description' => __( 'Show the views column on these post types. Leave all unchecked to show it on every public post type.', 'gappv' ),
+				'id'          => 'enabled-post-types',
+				'type'        => 'array',
+				'source'      => 'post_types',
+			)
+		);
+
+		add_settings_field(
+			'enabled-taxonomies',
+			esc_html__( 'Taxonomies', 'gappv' ),
+			array( $this, 'field_checkbox_list' ),
+			$this->plugin_name,
+			$this->plugin_name . '-config',
+			array(
+				'description' => __( 'Show the views column on the term listings for these taxonomies.', 'gappv' ),
+				'id'          => 'enabled-taxonomies',
+				'type'        => 'array',
+				'source'      => 'taxonomies',
+			)
+		);
+
 	}
 
 	/**
@@ -364,8 +570,16 @@ class Gappv_Admin {
 	 */
 	public function manage_admin_columns( $columns ) {
 
+		// Post list screens: only add the column for enabled post types.
+		// Term list screens pass through - the taxonomy column filter is only
+		// registered for enabled taxonomies.
+		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		if ( $screen && 'edit' === $screen->base && ! $this->is_post_type_enabled( $screen->post_type ) ) {
+			return $columns;
+		}
+
 		if ( ! array_key_exists( 'gappv', $columns ) ) {
-			$columns['gappv'] = __( 'GA Views', 'iyba-data-import' );
+			$columns['gappv'] = __( 'GA Views', 'gappv' );
 		}
 
 		return $columns;
@@ -390,8 +604,7 @@ class Gappv_Admin {
 	 * @return void
 	 */
 	public function sort_views_custom_column_query( $query ) {
-		global $pagenow;
-		if ( is_admin() && 'edit.php' == $pagenow ) {
+		if ( $this->should_run() ) {
 			$orderby = $query->get( 'orderby' );
 
 			if ( '_gappv_views' == $orderby ) {
@@ -414,6 +627,40 @@ class Gappv_Admin {
 	}
 
 	/**
+	 * Sorts term list tables by views when requested.
+	 *
+	 * The '_gappv_views' orderby value only comes from our sortable column,
+	 * so it is safe to react to it on any term query. Terms without a stored
+	 * count are included (sorted as no value) via the OR meta query.
+	 *
+	 * Uses pre_get_terms (not get_terms_args) because WP_Term_Query parses
+	 * its meta_query object before the get_terms_args filter runs, and the
+	 * orderby parser reads the meta clauses from that object.
+	 *
+	 * @param WP_Term_Query $query The term query, passed by reference.
+	 */
+	public function sort_terms_by_views( $query ) {
+
+		if ( isset( $query->query_vars['orderby'] ) && '_gappv_views' === $query->query_vars['orderby'] ) {
+
+			$query->query_vars['meta_query'] = array(
+				'relation' => 'OR',
+				array(
+					'key'     => '_gappv_views',
+					'compare' => 'NOT EXISTS',
+				),
+				array(
+					'key' => '_gappv_views',
+				),
+			);
+			$query->query_vars['orderby']    = 'meta_value_num';
+
+			// Re-parse so the orderby parser sees the new meta clauses.
+			$query->meta_query->parse_query_vars( $query->query_vars );
+		}
+	}
+
+	/**
 	 * Adds the column data specified above
 	 *
 	 * @param $column
@@ -431,43 +678,144 @@ class Gappv_Admin {
 					$total_views = get_post_meta( $post_id, '_gappv_views', true );
 					$total_views = $total_views ?: 0;
 				}
-				echo '<span class="gappv-total-views" data-id="' . $post_id . '" data-update="' . $needs_views . '">' . number_format_i18n( $total_views ) . '</span>';
+				echo '<span class="gappv-total-views" data-id="' . $post_id . '" data-type="post" data-update="' . $needs_views . '">' . number_format_i18n( $total_views ) . '</span>';
 				break;
 
 		}
 	}
 
+	/**
+	 * Renders the views column on term list screens.
+	 *
+	 * Unlike the post column hook (an action that echoes), the taxonomy
+	 * column hook is a filter that must return the cell content.
+	 *
+	 * @param string $content     The current column content.
+	 * @param string $column_name The column name.
+	 * @param int    $term_id     The term ID.
+	 *
+	 * @return string
+	 */
+	public function custom_taxonomy_column( $content, $column_name, $term_id ) {
+
+		if ( 'gappv' !== $column_name ) {
+			return $content;
+		}
+
+		$term = get_term( $term_id );
+		if ( ! $term || is_wp_error( $term ) ) {
+			return $content;
+		}
+
+		$transient   = '_gappv-term-' . $term_id;
+		$total_views = get_transient( $transient );
+		$needs_views = $total_views ? 'false' : 'true';
+		if ( ! $total_views ) {
+			// Check for term meta and show that before the update.
+			$total_views = get_term_meta( $term_id, '_gappv_views', true );
+			$total_views = $total_views ?: 0;
+		}
+
+		return $content . '<span class="gappv-total-views" data-id="' . esc_attr( $term_id ) . '" data-type="term" data-taxonomy="' . esc_attr( $term->taxonomy ) . '" data-update="' . $needs_views . '">' . number_format_i18n( $total_views ) . '</span>';
+	}
+
 	public function ajax_views_update() {
 
-		$post_id = isset( $_POST['post_id'] ) ? intval( $_POST['post_id'] ) : false;
+		check_ajax_referer( 'gappv_ajax_views_update', 'nonce' );
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_die();
+		}
+
+		$object_type = ( isset( $_POST['object_type'] ) && 'term' === $_POST['object_type'] ) ? 'term' : 'post';
+		$object_id   = isset( $_POST['object_id'] ) ? intval( $_POST['object_id'] ) : 0;
+		// Back-compat with the original parameter name.
+		if ( ! $object_id && isset( $_POST['post_id'] ) ) {
+			$object_id = intval( $_POST['post_id'] );
+		}
 
 		$options = $this->options;
-		if ( ! $options['json-key'] || ! $options['property-id'] || ! $post_id ) {
-			return false;
-		}
-		if ( ! $options['cache-time'] ) {
-			$options['cache-time'] = 1;
+		if ( ! $options['json-key'] || ! $options['property-id'] || ! $object_id ) {
+			wp_die();
 		}
 
-		$transient   = '_gappv-' . $post_id;
+		if ( 'term' === $object_type ) {
+			$taxonomy = isset( $_POST['taxonomy'] ) ? sanitize_key( $_POST['taxonomy'] ) : '';
+			echo $this->get_term_views( $object_id, $taxonomy );
+			wp_die();
+		}
+
+		$transient   = '_gappv-' . $object_id;
+		$total_views = get_transient( $transient );
+
+		if ( $total_views !== false && is_numeric( $total_views ) ) {
+			echo $total_views;
+			wp_die();
+		}
+
+		$link      = wp_make_link_relative( get_permalink( $object_id ) );
+		$post_date = get_the_date( 'Y-m-d', $object_id );
+
+		if ( isset( $options['start-date'] ) && strtotime( $post_date ) < strtotime( $options['start-date'] ) ) {
+			$post_date = $options['start-date'];
+		}
+
+		$views = $this->call_api( $object_id, $link, $post_date );
+
+		echo $views;
+
+		wp_die();
+	}
+
+	/**
+	 * Returns the view count for a term, from cache or the API.
+	 *
+	 * @param int    $term_id  The term ID.
+	 * @param string $taxonomy The taxonomy name.
+	 *
+	 * @return int|string The view count, or 'Error'.
+	 */
+	public function get_term_views( $term_id, $taxonomy ) {
+
+		if ( ! $taxonomy || ! $this->is_taxonomy_enabled( $taxonomy ) ) {
+			return 'Error';
+		}
+
+		$term = get_term( $term_id, $taxonomy );
+		if ( ! $term || is_wp_error( $term ) ) {
+			return 'Error';
+		}
+
+		$transient   = '_gappv-term-' . $term_id;
 		$total_views = get_transient( $transient );
 
 		if ( $total_views !== false && is_numeric( $total_views ) ) {
 			return $total_views;
 		}
 
-		$link 	= wp_make_link_relative( get_permalink( $post_id ) );
-		$post_date = get_the_date( 'Y-m-d', $post_id );
-
-		if ( isset( $options['start-date'] ) && strtotime( $post_date ) < strtotime( $options['start-date'] ) ) {
-			$post_date = $options['start-date'];
+		$term_link = get_term_link( $term );
+		if ( is_wp_error( $term_link ) ) {
+			return 'Error';
 		}
 
-		$views = $this->call_api( $post_id, $link, $post_date );
+		$options = $this->options;
 
-		echo $views;
+		// Terms have no publish date - use the configured start date, or the
+		// earliest date the GA4 API accepts.
+		$start_date = ! empty( $options['start-date'] ) ? $options['start-date'] : '2015-08-14';
 
-		wp_die();
+		$views = $this->fetch_views( wp_make_link_relative( $term_link ), $start_date );
+
+		if ( false === $views ) {
+			return 'Error';
+		}
+
+		$cache_time = ! empty( $options['cache-time'] ) ? $options['cache-time'] : 1;
+
+		update_term_meta( $term_id, '_gappv_views', $views );
+		set_transient( $transient, $views, $cache_time * HOUR_IN_SECONDS );
+
+		return $views;
 	}
 
 	public function call_api( $post_id, $link, $post_date ) {
@@ -476,12 +824,40 @@ class Gappv_Admin {
 			return 0;
 		}
 
+		$views = $this->fetch_views( $link, $post_date );
+
+		if ( false === $views ) {
+			echo 'Error';
+			return;
+		}
+
+		if ( $views > 0 ) {
+			$options    = $this->options;
+			$cache_time = ! empty( $options['cache-time'] ) ? $options['cache-time'] : 1;
+
+			update_post_meta( $post_id, '_gappv_views', $views );
+			set_transient( '_gappv-' . $post_id, $views, $cache_time * HOUR_IN_SECONDS );
+		} else {
+			update_post_meta( $post_id, '_gappv_views', 0 );
+		}
+
+		return $views;
+	}
+
+	/**
+	 * Queries the GA4 API for the pageview count of a relative link.
+	 *
+	 * @param string $link       The relative link to match (exact pagePath).
+	 * @param string $start_date The report start date (Y-m-d).
+	 *
+	 * @return int|false The view count, or false on failure.
+	 */
+	public function fetch_views( $link, $start_date ) {
+
 		$options = $this->options;
 		if ( ! $options['json-key'] || ! $options['property-id'] ) {
 			return false;
 		}
-
-		$transient = '_gappv-' . $post_id;
 
 		try {
 			$client = new BetaAnalyticsDataClient(
@@ -506,65 +882,57 @@ class Gappv_Admin {
 				)
 			);
 
-			$response = $client->runReport(
-				array(
-					'property'           => 'properties/' . $options['property-id'],
-					'dateRanges'         => array(
+			$request = ( new RunReportRequest() )
+				->setProperty( 'properties/' . $options['property-id'] )
+				->setDateRanges(
+					array(
 						new DateRange(
 							array(
-								'start_date' => $post_date,
+								'start_date' => $start_date,
 								'end_date'   => 'today',
 							)
 						),
-					),
-					'dimensions'         => array(
+					)
+				)
+				->setDimensions(
+					array(
 						new Dimension(
 							array(
 								'name' => 'pagePath',
 							)
 						),
-					),
-					'metrics'            => array(
+					)
+				)
+				->setMetrics(
+					array(
 						new Metric(
 							array(
 								'name' => 'screenPageViews',
 							)
 						),
-					),
-					'dimensionFilter'    => $filter,
-					'metricAggregations' => array( 1 ),
-					'sampling'           => 'LARGE',
+					)
 				)
-			);
+				->setDimensionFilter( $filter )
+				->setMetricAggregations( array( MetricAggregation::TOTAL ) );
+
+			$response = $client->runReport( $request );
 
 			$views = 0;
 
 			if ( count( $response->getRows() ) > 0 ) {
-				$views = $response->getRows()[0]->getMetricValues()[0]->getValue();
-
-				/**
-				if ( $views >= 1000000 ) {
-					$views = round( $views / 1000000, 1 ) . 'm';
-				} elseif ( $views >= 1000 ) {
-					$views = round( $views / 1000, 1 ) . 'k';
-				} else {
-					$views = number_format_i18n( $views );
-				}
-				*/
-
-				update_post_meta( $post_id, '_gappv_views', $views );
-				set_transient( $transient, $views, $options['cache-time'] * HOUR_IN_SECONDS );
-
-			} else {
-				update_post_meta( $post_id, '_gappv_views', 0 );
+				$views = (int) $response->getRows()[0]->getMetricValues()[0]->getValue();
 			}
 
 			return $views;
 
-		} catch ( Exception $e ) {
-			echo 'Error';
+		} catch ( Throwable $e ) {
+			// Catches API/auth exceptions and also fatal errors such as the
+			// protobuf library calling bcmath functions on hosts without the
+			// bcmath extension.
+			return false;
 		}
 
 	}
 
 }
+

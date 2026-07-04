@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1alpha;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Optional settings of a cohort report.
@@ -21,7 +21,7 @@ class CohortReportSettings extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>bool accumulate = 1;</code>
      */
-    private $accumulate = false;
+    protected $accumulate = false;
 
     /**
      * Constructor.

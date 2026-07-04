@@ -5,8 +5,8 @@
 namespace Google\Api;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Selects and configures the service controller used by the service.
@@ -20,12 +20,18 @@ class Control extends \Google\Protobuf\Internal\Message
 {
     /**
      * The service controller environment to use. If empty, no control plane
-     * feature (like quota and billing) will be enabled. The recommended value for
-     * most services is servicecontrol.googleapis.com
+     * features (like quota and billing) will be enabled. The recommended value
+     * for most services is servicecontrol.googleapis.com.
      *
      * Generated from protobuf field <code>string environment = 1;</code>
      */
     protected $environment = '';
+    /**
+     * Defines policies applying to the API methods of the service.
+     *
+     * Generated from protobuf field <code>repeated .google.api.MethodPolicy method_policies = 4;</code>
+     */
+    private $method_policies;
 
     /**
      * Constructor.
@@ -35,8 +41,10 @@ class Control extends \Google\Protobuf\Internal\Message
      *
      *     @type string $environment
      *           The service controller environment to use. If empty, no control plane
-     *           feature (like quota and billing) will be enabled. The recommended value for
-     *           most services is servicecontrol.googleapis.com
+     *           features (like quota and billing) will be enabled. The recommended value
+     *           for most services is servicecontrol.googleapis.com.
+     *     @type \Google\Api\MethodPolicy[] $method_policies
+     *           Defines policies applying to the API methods of the service.
      * }
      */
     public function __construct($data = NULL) {
@@ -46,8 +54,8 @@ class Control extends \Google\Protobuf\Internal\Message
 
     /**
      * The service controller environment to use. If empty, no control plane
-     * feature (like quota and billing) will be enabled. The recommended value for
-     * most services is servicecontrol.googleapis.com
+     * features (like quota and billing) will be enabled. The recommended value
+     * for most services is servicecontrol.googleapis.com.
      *
      * Generated from protobuf field <code>string environment = 1;</code>
      * @return string
@@ -59,8 +67,8 @@ class Control extends \Google\Protobuf\Internal\Message
 
     /**
      * The service controller environment to use. If empty, no control plane
-     * feature (like quota and billing) will be enabled. The recommended value for
-     * most services is servicecontrol.googleapis.com
+     * features (like quota and billing) will be enabled. The recommended value
+     * for most services is servicecontrol.googleapis.com.
      *
      * Generated from protobuf field <code>string environment = 1;</code>
      * @param string $var
@@ -70,6 +78,32 @@ class Control extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkString($var, True);
         $this->environment = $var;
+
+        return $this;
+    }
+
+    /**
+     * Defines policies applying to the API methods of the service.
+     *
+     * Generated from protobuf field <code>repeated .google.api.MethodPolicy method_policies = 4;</code>
+     * @return RepeatedField<\Google\Api\MethodPolicy>
+     */
+    public function getMethodPolicies()
+    {
+        return $this->method_policies;
+    }
+
+    /**
+     * Defines policies applying to the API methods of the service.
+     *
+     * Generated from protobuf field <code>repeated .google.api.MethodPolicy method_policies = 4;</code>
+     * @param \Google\Api\MethodPolicy[] $var
+     * @return $this
+     */
+    public function setMethodPolicies($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Google\Api\MethodPolicy::class);
+        $this->method_policies = $arr;
 
         return $this;
     }

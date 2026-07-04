@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * The request for compatibility information for a report's dimensions and
@@ -19,18 +19,15 @@ use Google\Protobuf\Internal\GPBUtil;
 class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
 {
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked. To
+     * A Google Analytics property identifier whose events are tracked. To
      * learn more, see [where to find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
      * `property` should be the same value as in your `runReport` request.
      * Example: properties/1234
-     * Set the Property ID to 0 for compatibility checking on dimensions and
-     * metrics common to all properties. In this special mode, this method will
-     * not return custom dimensions and metrics.
      *
      * Generated from protobuf field <code>string property = 1;</code>
      */
-    private $property = '';
+    protected $property = '';
     /**
      * The dimensions in this report. `dimensions` should be the same value as in
      * your `runReport` request.
@@ -51,14 +48,14 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.FilterExpression dimension_filter = 4;</code>
      */
-    private $dimension_filter = null;
+    protected $dimension_filter = null;
     /**
      * The filter clause of metrics. `metricFilter` should be the same value as in
      * your `runReport` request
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.FilterExpression metric_filter = 5;</code>
      */
-    private $metric_filter = null;
+    protected $metric_filter = null;
     /**
      * Filters the dimensions and metrics in the response to just this
      * compatibility. Commonly used as `”compatibilityFilter”: “COMPATIBLE”`
@@ -66,7 +63,7 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.Compatibility compatibility_filter = 6;</code>
      */
-    private $compatibility_filter = 0;
+    protected $compatibility_filter = 0;
 
     /**
      * Constructor.
@@ -75,18 +72,15 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $property
-     *           A Google Analytics GA4 property identifier whose events are tracked. To
+     *           A Google Analytics property identifier whose events are tracked. To
      *           learn more, see [where to find your Property
      *           ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
      *           `property` should be the same value as in your `runReport` request.
      *           Example: properties/1234
-     *           Set the Property ID to 0 for compatibility checking on dimensions and
-     *           metrics common to all properties. In this special mode, this method will
-     *           not return custom dimensions and metrics.
-     *     @type array<\Google\Analytics\Data\V1beta\Dimension>|\Google\Protobuf\Internal\RepeatedField $dimensions
+     *     @type \Google\Analytics\Data\V1beta\Dimension[] $dimensions
      *           The dimensions in this report. `dimensions` should be the same value as in
      *           your `runReport` request.
-     *     @type array<\Google\Analytics\Data\V1beta\Metric>|\Google\Protobuf\Internal\RepeatedField $metrics
+     *     @type \Google\Analytics\Data\V1beta\Metric[] $metrics
      *           The metrics in this report. `metrics` should be the same value as in your
      *           `runReport` request.
      *     @type \Google\Analytics\Data\V1beta\FilterExpression $dimension_filter
@@ -107,14 +101,11 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked. To
+     * A Google Analytics property identifier whose events are tracked. To
      * learn more, see [where to find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
      * `property` should be the same value as in your `runReport` request.
      * Example: properties/1234
-     * Set the Property ID to 0 for compatibility checking on dimensions and
-     * metrics common to all properties. In this special mode, this method will
-     * not return custom dimensions and metrics.
      *
      * Generated from protobuf field <code>string property = 1;</code>
      * @return string
@@ -125,14 +116,11 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A Google Analytics GA4 property identifier whose events are tracked. To
+     * A Google Analytics property identifier whose events are tracked. To
      * learn more, see [where to find your Property
      * ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
      * `property` should be the same value as in your `runReport` request.
      * Example: properties/1234
-     * Set the Property ID to 0 for compatibility checking on dimensions and
-     * metrics common to all properties. In this special mode, this method will
-     * not return custom dimensions and metrics.
      *
      * Generated from protobuf field <code>string property = 1;</code>
      * @param string $var
@@ -151,7 +139,7 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
      * your `runReport` request.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Dimension dimensions = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\Dimension>
      */
     public function getDimensions()
     {
@@ -163,7 +151,7 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
      * your `runReport` request.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Dimension dimensions = 2;</code>
-     * @param array<\Google\Analytics\Data\V1beta\Dimension>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\Dimension[] $var
      * @return $this
      */
     public function setDimensions($var)
@@ -179,7 +167,7 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
      * `runReport` request.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Metric metrics = 3;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\Metric>
      */
     public function getMetrics()
     {
@@ -191,7 +179,7 @@ class CheckCompatibilityRequest extends \Google\Protobuf\Internal\Message
      * `runReport` request.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.Metric metrics = 3;</code>
-     * @param array<\Google\Analytics\Data\V1beta\Metric>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\Metric[] $var
      * @return $this
      */
     public function setMetrics($var)

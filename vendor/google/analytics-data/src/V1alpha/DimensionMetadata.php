@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1alpha;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Explains a dimension.
@@ -16,25 +16,25 @@ use Google\Protobuf\Internal\GPBUtil;
 class DimensionMetadata extends \Google\Protobuf\Internal\Message
 {
     /**
-     * This dimension's name. Useable in [Dimension](#Dimension)'s `name`. For
+     * This dimension's name. Usable in [Dimension](#Dimension)'s `name`. For
      * example, `eventName`.
      *
      * Generated from protobuf field <code>string api_name = 1;</code>
      */
-    private $api_name = '';
+    protected $api_name = '';
     /**
      * This dimension's name within the Google Analytics user interface. For
      * example, `Event name`.
      *
      * Generated from protobuf field <code>string ui_name = 2;</code>
      */
-    private $ui_name = '';
+    protected $ui_name = '';
     /**
      * Description of how this dimension is used and calculated.
      *
      * Generated from protobuf field <code>string description = 3;</code>
      */
-    private $description = '';
+    protected $description = '';
     /**
      * Still usable but deprecated names for this dimension. If populated, this
      * dimension is available by either `apiName` or one of `deprecatedApiNames`
@@ -45,11 +45,28 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
      */
     private $deprecated_api_names;
     /**
-     * True if the dimension is a custom dimension for this property.
+     * True if the dimension is custom to this property. This includes user,
+     * event, & item scoped custom dimensions; to learn more about custom
+     * dimensions, see https://support.google.com/analytics/answer/14240153. This
+     * also include custom channel groups; to learn more about custom channel
+     * groups, see https://support.google.com/analytics/answer/13051316.
      *
      * Generated from protobuf field <code>bool custom_definition = 5;</code>
      */
-    private $custom_definition = false;
+    protected $custom_definition = false;
+    /**
+     * The display name of the category that this dimension belongs to. Similar
+     * dimensions and metrics are categorized together.
+     *
+     * Generated from protobuf field <code>string category = 6;</code>
+     */
+    protected $category = '';
+    /**
+     * Specifies the Google Analytics sections this dimension applies to.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Section sections = 7;</code>
+     */
+    private $sections;
 
     /**
      * Constructor.
@@ -58,20 +75,29 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $api_name
-     *           This dimension's name. Useable in [Dimension](#Dimension)'s `name`. For
+     *           This dimension's name. Usable in [Dimension](#Dimension)'s `name`. For
      *           example, `eventName`.
      *     @type string $ui_name
      *           This dimension's name within the Google Analytics user interface. For
      *           example, `Event name`.
      *     @type string $description
      *           Description of how this dimension is used and calculated.
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $deprecated_api_names
+     *     @type string[] $deprecated_api_names
      *           Still usable but deprecated names for this dimension. If populated, this
      *           dimension is available by either `apiName` or one of `deprecatedApiNames`
      *           for a period of time. After the deprecation period, the dimension will be
      *           available only by `apiName`.
      *     @type bool $custom_definition
-     *           True if the dimension is a custom dimension for this property.
+     *           True if the dimension is custom to this property. This includes user,
+     *           event, & item scoped custom dimensions; to learn more about custom
+     *           dimensions, see https://support.google.com/analytics/answer/14240153. This
+     *           also include custom channel groups; to learn more about custom channel
+     *           groups, see https://support.google.com/analytics/answer/13051316.
+     *     @type string $category
+     *           The display name of the category that this dimension belongs to. Similar
+     *           dimensions and metrics are categorized together.
+     *     @type int[] $sections
+     *           Specifies the Google Analytics sections this dimension applies to.
      * }
      */
     public function __construct($data = NULL) {
@@ -80,7 +106,7 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * This dimension's name. Useable in [Dimension](#Dimension)'s `name`. For
+     * This dimension's name. Usable in [Dimension](#Dimension)'s `name`. For
      * example, `eventName`.
      *
      * Generated from protobuf field <code>string api_name = 1;</code>
@@ -92,7 +118,7 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * This dimension's name. Useable in [Dimension](#Dimension)'s `name`. For
+     * This dimension's name. Usable in [Dimension](#Dimension)'s `name`. For
      * example, `eventName`.
      *
      * Generated from protobuf field <code>string api_name = 1;</code>
@@ -168,7 +194,7 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
      * available only by `apiName`.
      *
      * Generated from protobuf field <code>repeated string deprecated_api_names = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<string>
      */
     public function getDeprecatedApiNames()
     {
@@ -182,7 +208,7 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
      * available only by `apiName`.
      *
      * Generated from protobuf field <code>repeated string deprecated_api_names = 4;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[] $var
      * @return $this
      */
     public function setDeprecatedApiNames($var)
@@ -194,7 +220,11 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * True if the dimension is a custom dimension for this property.
+     * True if the dimension is custom to this property. This includes user,
+     * event, & item scoped custom dimensions; to learn more about custom
+     * dimensions, see https://support.google.com/analytics/answer/14240153. This
+     * also include custom channel groups; to learn more about custom channel
+     * groups, see https://support.google.com/analytics/answer/13051316.
      *
      * Generated from protobuf field <code>bool custom_definition = 5;</code>
      * @return bool
@@ -205,7 +235,11 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * True if the dimension is a custom dimension for this property.
+     * True if the dimension is custom to this property. This includes user,
+     * event, & item scoped custom dimensions; to learn more about custom
+     * dimensions, see https://support.google.com/analytics/answer/14240153. This
+     * also include custom channel groups; to learn more about custom channel
+     * groups, see https://support.google.com/analytics/answer/13051316.
      *
      * Generated from protobuf field <code>bool custom_definition = 5;</code>
      * @param bool $var
@@ -215,6 +249,60 @@ class DimensionMetadata extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkBool($var);
         $this->custom_definition = $var;
+
+        return $this;
+    }
+
+    /**
+     * The display name of the category that this dimension belongs to. Similar
+     * dimensions and metrics are categorized together.
+     *
+     * Generated from protobuf field <code>string category = 6;</code>
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * The display name of the category that this dimension belongs to. Similar
+     * dimensions and metrics are categorized together.
+     *
+     * Generated from protobuf field <code>string category = 6;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setCategory($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->category = $var;
+
+        return $this;
+    }
+
+    /**
+     * Specifies the Google Analytics sections this dimension applies to.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Section sections = 7;</code>
+     * @return RepeatedField<int>
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * Specifies the Google Analytics sections this dimension applies to.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Section sections = 7;</code>
+     * @param int[] $var
+     * @return $this
+     */
+    public function setSections($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::ENUM, \Google\Analytics\Data\V1alpha\Section::class);
+        $this->sections = $arr;
 
         return $this;
     }

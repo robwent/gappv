@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta\OrderBy;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Sorts by metric values.
@@ -20,7 +20,7 @@ class MetricOrderBy extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string metric_name = 1;</code>
      */
-    private $metric_name = '';
+    protected $metric_name = '';
 
     /**
      * Constructor.
@@ -64,5 +64,4 @@ class MetricOrderBy extends \Google\Protobuf\Internal\Message
     }
 
 }
-
 

@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1alpha;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Explains a metric.
@@ -16,25 +16,25 @@ use Google\Protobuf\Internal\GPBUtil;
 class MetricMetadata extends \Google\Protobuf\Internal\Message
 {
     /**
-     * A metric name. Useable in [Metric](#Metric)'s `name`. For example,
+     * A metric name. Usable in [Metric](#Metric)'s `name`. For example,
      * `eventCount`.
      *
      * Generated from protobuf field <code>string api_name = 1;</code>
      */
-    private $api_name = '';
+    protected $api_name = '';
     /**
      * This metric's name within the Google Analytics user interface. For example,
      * `Event count`.
      *
      * Generated from protobuf field <code>string ui_name = 2;</code>
      */
-    private $ui_name = '';
+    protected $ui_name = '';
     /**
      * Description of how this metric is used and calculated.
      *
      * Generated from protobuf field <code>string description = 3;</code>
      */
-    private $description = '';
+    protected $description = '';
     /**
      * Still usable but deprecated names for this metric. If populated, this
      * metric is available by either `apiName` or one of `deprecatedApiNames`
@@ -49,7 +49,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>.google.analytics.data.v1alpha.MetricType type = 5;</code>
      */
-    private $type = 0;
+    protected $type = 0;
     /**
      * The mathematical expression for this derived metric. Can be used in
      * [Metric](#Metric)'s `expression` field for equivalent reports. Most metrics
@@ -57,13 +57,38 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string expression = 6;</code>
      */
-    private $expression = '';
+    protected $expression = '';
     /**
      * True if the metric is a custom metric for this property.
      *
      * Generated from protobuf field <code>bool custom_definition = 7;</code>
      */
-    private $custom_definition = false;
+    protected $custom_definition = false;
+    /**
+     * If reasons are specified, your access is blocked to this metric for this
+     * property. API requests from you to this property for this metric will
+     * succeed; however, the report will contain only zeros for this metric. API
+     * requests with metric filters on blocked metrics will fail. If reasons are
+     * empty, you have access to this metric.
+     * To learn more, see [Access and data-restriction
+     * management](https://support.google.com/analytics/answer/10851388).
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricMetadata.BlockedReason blocked_reasons = 8;</code>
+     */
+    private $blocked_reasons;
+    /**
+     * The display name of the category that this metrics belongs to. Similar
+     * dimensions and metrics are categorized together.
+     *
+     * Generated from protobuf field <code>string category = 9;</code>
+     */
+    protected $category = '';
+    /**
+     * Specifies the Google Analytics sections this metric applies to.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Section sections = 10;</code>
+     */
+    private $sections;
 
     /**
      * Constructor.
@@ -72,14 +97,14 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type string $api_name
-     *           A metric name. Useable in [Metric](#Metric)'s `name`. For example,
+     *           A metric name. Usable in [Metric](#Metric)'s `name`. For example,
      *           `eventCount`.
      *     @type string $ui_name
      *           This metric's name within the Google Analytics user interface. For example,
      *           `Event count`.
      *     @type string $description
      *           Description of how this metric is used and calculated.
-     *     @type string[]|\Google\Protobuf\Internal\RepeatedField $deprecated_api_names
+     *     @type string[] $deprecated_api_names
      *           Still usable but deprecated names for this metric. If populated, this
      *           metric is available by either `apiName` or one of `deprecatedApiNames`
      *           for a period of time. After the deprecation period, the metric will be
@@ -92,6 +117,19 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      *           are not expressions, and for non-expressions, this field is empty.
      *     @type bool $custom_definition
      *           True if the metric is a custom metric for this property.
+     *     @type int[] $blocked_reasons
+     *           If reasons are specified, your access is blocked to this metric for this
+     *           property. API requests from you to this property for this metric will
+     *           succeed; however, the report will contain only zeros for this metric. API
+     *           requests with metric filters on blocked metrics will fail. If reasons are
+     *           empty, you have access to this metric.
+     *           To learn more, see [Access and data-restriction
+     *           management](https://support.google.com/analytics/answer/10851388).
+     *     @type string $category
+     *           The display name of the category that this metrics belongs to. Similar
+     *           dimensions and metrics are categorized together.
+     *     @type int[] $sections
+     *           Specifies the Google Analytics sections this metric applies to.
      * }
      */
     public function __construct($data = NULL) {
@@ -100,7 +138,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A metric name. Useable in [Metric](#Metric)'s `name`. For example,
+     * A metric name. Usable in [Metric](#Metric)'s `name`. For example,
      * `eventCount`.
      *
      * Generated from protobuf field <code>string api_name = 1;</code>
@@ -112,7 +150,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * A metric name. Useable in [Metric](#Metric)'s `name`. For example,
+     * A metric name. Usable in [Metric](#Metric)'s `name`. For example,
      * `eventCount`.
      *
      * Generated from protobuf field <code>string api_name = 1;</code>
@@ -188,7 +226,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      * available only by `apiName`.
      *
      * Generated from protobuf field <code>repeated string deprecated_api_names = 4;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<string>
      */
     public function getDeprecatedApiNames()
     {
@@ -202,7 +240,7 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
      * available only by `apiName`.
      *
      * Generated from protobuf field <code>repeated string deprecated_api_names = 4;</code>
-     * @param string[]|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[] $var
      * @return $this
      */
     public function setDeprecatedApiNames($var)
@@ -291,6 +329,98 @@ class MetricMetadata extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkBool($var);
         $this->custom_definition = $var;
+
+        return $this;
+    }
+
+    /**
+     * If reasons are specified, your access is blocked to this metric for this
+     * property. API requests from you to this property for this metric will
+     * succeed; however, the report will contain only zeros for this metric. API
+     * requests with metric filters on blocked metrics will fail. If reasons are
+     * empty, you have access to this metric.
+     * To learn more, see [Access and data-restriction
+     * management](https://support.google.com/analytics/answer/10851388).
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricMetadata.BlockedReason blocked_reasons = 8;</code>
+     * @return RepeatedField<int>
+     */
+    public function getBlockedReasons()
+    {
+        return $this->blocked_reasons;
+    }
+
+    /**
+     * If reasons are specified, your access is blocked to this metric for this
+     * property. API requests from you to this property for this metric will
+     * succeed; however, the report will contain only zeros for this metric. API
+     * requests with metric filters on blocked metrics will fail. If reasons are
+     * empty, you have access to this metric.
+     * To learn more, see [Access and data-restriction
+     * management](https://support.google.com/analytics/answer/10851388).
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricMetadata.BlockedReason blocked_reasons = 8;</code>
+     * @param int[] $var
+     * @return $this
+     */
+    public function setBlockedReasons($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::ENUM, \Google\Analytics\Data\V1alpha\MetricMetadata\BlockedReason::class);
+        $this->blocked_reasons = $arr;
+
+        return $this;
+    }
+
+    /**
+     * The display name of the category that this metrics belongs to. Similar
+     * dimensions and metrics are categorized together.
+     *
+     * Generated from protobuf field <code>string category = 9;</code>
+     * @return string
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * The display name of the category that this metrics belongs to. Similar
+     * dimensions and metrics are categorized together.
+     *
+     * Generated from protobuf field <code>string category = 9;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setCategory($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->category = $var;
+
+        return $this;
+    }
+
+    /**
+     * Specifies the Google Analytics sections this metric applies to.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Section sections = 10;</code>
+     * @return RepeatedField<int>
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * Specifies the Google Analytics sections this metric applies to.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Section sections = 10;</code>
+     * @param int[] $var
+     * @return $this
+     */
+    public function setSections($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::ENUM, \Google\Analytics\Data\V1alpha\Section::class);
+        $this->sections = $arr;
 
         return $this;
     }

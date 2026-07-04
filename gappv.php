@@ -16,7 +16,7 @@
  * Plugin Name:       Google Analytics Post Page Views
  * Plugin URI:        https://robertwent.com
  * Description:       Retrieves and displays the pageviews for each post by linking to your Google Analytics V4 account.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            Robert Went
  * Author URI:        https://robertwent.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'GAPPV_VERSION', '1.0.1' );
+define( 'GAPPV_VERSION', '1.1.0' );
 
 /**
  * Require the Google Api Client Library

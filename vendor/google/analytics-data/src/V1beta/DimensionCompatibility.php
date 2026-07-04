@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * The compatibility for a single dimension.
@@ -22,14 +22,14 @@ class DimensionCompatibility extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>optional .google.analytics.data.v1beta.DimensionMetadata dimension_metadata = 1;</code>
      */
-    private $dimension_metadata = null;
+    protected $dimension_metadata = null;
     /**
      * The compatibility of this dimension. If the compatibility is COMPATIBLE,
      * this dimension can be successfully added to the report.
      *
      * Generated from protobuf field <code>optional .google.analytics.data.v1beta.Compatibility compatibility = 2;</code>
      */
-    private $compatibility = null;
+    protected $compatibility = null;
 
     /**
      * Constructor.

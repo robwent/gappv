@@ -5,11 +5,12 @@
 namespace Google\Analytics\Data\V1beta;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
- * The dimensions and metrics currently accepted in reporting methods.
+ * The dimensions, metrics and comparisons currently accepted in reporting
+ * methods.
  *
  * Generated from protobuf message <code>google.analytics.data.v1beta.Metadata</code>
  */
@@ -20,7 +21,7 @@ class Metadata extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string name = 3;</code>
      */
-    private $name = '';
+    protected $name = '';
     /**
      * The dimension descriptions.
      *
@@ -33,6 +34,12 @@ class Metadata extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricMetadata metrics = 2;</code>
      */
     private $metrics;
+    /**
+     * The comparison descriptions.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.ComparisonMetadata comparisons = 4;</code>
+     */
+    private $comparisons;
 
     /**
      * Constructor.
@@ -42,10 +49,12 @@ class Metadata extends \Google\Protobuf\Internal\Message
      *
      *     @type string $name
      *           Resource name of this metadata.
-     *     @type array<\Google\Analytics\Data\V1beta\DimensionMetadata>|\Google\Protobuf\Internal\RepeatedField $dimensions
+     *     @type \Google\Analytics\Data\V1beta\DimensionMetadata[] $dimensions
      *           The dimension descriptions.
-     *     @type array<\Google\Analytics\Data\V1beta\MetricMetadata>|\Google\Protobuf\Internal\RepeatedField $metrics
+     *     @type \Google\Analytics\Data\V1beta\MetricMetadata[] $metrics
      *           The metric descriptions.
+     *     @type \Google\Analytics\Data\V1beta\ComparisonMetadata[] $comparisons
+     *           The comparison descriptions.
      * }
      */
     public function __construct($data = NULL) {
@@ -83,7 +92,7 @@ class Metadata extends \Google\Protobuf\Internal\Message
      * The dimension descriptions.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.DimensionMetadata dimensions = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\DimensionMetadata>
      */
     public function getDimensions()
     {
@@ -94,7 +103,7 @@ class Metadata extends \Google\Protobuf\Internal\Message
      * The dimension descriptions.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.DimensionMetadata dimensions = 1;</code>
-     * @param array<\Google\Analytics\Data\V1beta\DimensionMetadata>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\DimensionMetadata[] $var
      * @return $this
      */
     public function setDimensions($var)
@@ -109,7 +118,7 @@ class Metadata extends \Google\Protobuf\Internal\Message
      * The metric descriptions.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricMetadata metrics = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\MetricMetadata>
      */
     public function getMetrics()
     {
@@ -120,13 +129,39 @@ class Metadata extends \Google\Protobuf\Internal\Message
      * The metric descriptions.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.MetricMetadata metrics = 2;</code>
-     * @param array<\Google\Analytics\Data\V1beta\MetricMetadata>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param \Google\Analytics\Data\V1beta\MetricMetadata[] $var
      * @return $this
      */
     public function setMetrics($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Google\Analytics\Data\V1beta\MetricMetadata::class);
         $this->metrics = $arr;
+
+        return $this;
+    }
+
+    /**
+     * The comparison descriptions.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.ComparisonMetadata comparisons = 4;</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1beta\ComparisonMetadata>
+     */
+    public function getComparisons()
+    {
+        return $this->comparisons;
+    }
+
+    /**
+     * The comparison descriptions.
+     *
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.ComparisonMetadata comparisons = 4;</code>
+     * @param \Google\Analytics\Data\V1beta\ComparisonMetadata[] $var
+     * @return $this
+     */
+    public function setComparisons($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Google\Analytics\Data\V1beta\ComparisonMetadata::class);
+        $this->comparisons = $arr;
 
         return $this;
     }

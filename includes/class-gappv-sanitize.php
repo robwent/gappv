@@ -81,6 +81,8 @@ class Gappv_Sanitize {
             case 'url'				: $sanitized = esc_url( $this->data ); break;
             case 'raw'				: $sanitized = $this->data; break;
 
+            case 'array'			: $sanitized = array_values( array_filter( array_map( 'sanitize_key', (array) $this->data ) ) ); break;
+
         } // switch
 
         /**

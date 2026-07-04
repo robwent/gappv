@@ -5,8 +5,8 @@
 namespace Google\Cloud\Iam\V1;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Associates `members`, or principals, with a `role`.
@@ -23,33 +23,33 @@ class Binding extends \Google\Protobuf\Internal\Message
      */
     protected $role = '';
     /**
-     * Specifies the principals requesting access for a Cloud Platform resource.
+     * Specifies the principals requesting access for a Google Cloud resource.
      * `members` can have the following values:
      * * `allUsers`: A special identifier that represents anyone who is
      *    on the internet; with or without a Google account.
      * * `allAuthenticatedUsers`: A special identifier that represents anyone
      *    who is authenticated with a Google account or a service account.
      * * `user:{emailid}`: An email address that represents a specific Google
-     *    account. For example, `alice&#64;example.com` .
+     *    account. For example, `alice\@example.com` .
      * * `serviceAccount:{emailid}`: An email address that represents a service
-     *    account. For example, `my-other-app&#64;appspot.gserviceaccount.com`.
+     *    account. For example, `my-other-app\@appspot.gserviceaccount.com`.
      * * `group:{emailid}`: An email address that represents a Google group.
-     *    For example, `admins&#64;example.com`.
+     *    For example, `admins\@example.com`.
      * * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique
      *    identifier) representing a user that has been recently deleted. For
-     *    example, `alice&#64;example.com?uid=123456789012345678901`. If the user is
+     *    example, `alice\@example.com?uid=123456789012345678901`. If the user is
      *    recovered, this value reverts to `user:{emailid}` and the recovered user
      *    retains the role in the binding.
      * * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus
      *    unique identifier) representing a service account that has been recently
      *    deleted. For example,
-     *    `my-other-app&#64;appspot.gserviceaccount.com?uid=123456789012345678901`.
+     *    `my-other-app\@appspot.gserviceaccount.com?uid=123456789012345678901`.
      *    If the service account is undeleted, this value reverts to
      *    `serviceAccount:{emailid}` and the undeleted service account retains the
      *    role in the binding.
      * * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique
      *    identifier) representing a Google group that has been recently
-     *    deleted. For example, `admins&#64;example.com?uid=123456789012345678901`. If
+     *    deleted. For example, `admins\@example.com?uid=123456789012345678901`. If
      *    the group is recovered, this value reverts to `group:{emailid}` and the
      *    recovered group retains the role in the binding.
      * * `domain:{domain}`: The G Suite domain (primary) that represents all the
@@ -82,34 +82,34 @@ class Binding extends \Google\Protobuf\Internal\Message
      *     @type string $role
      *           Role that is assigned to the list of `members`, or principals.
      *           For example, `roles/viewer`, `roles/editor`, or `roles/owner`.
-     *     @type array<string>|\Google\Protobuf\Internal\RepeatedField $members
-     *           Specifies the principals requesting access for a Cloud Platform resource.
+     *     @type string[] $members
+     *           Specifies the principals requesting access for a Google Cloud resource.
      *           `members` can have the following values:
      *           * `allUsers`: A special identifier that represents anyone who is
      *              on the internet; with or without a Google account.
      *           * `allAuthenticatedUsers`: A special identifier that represents anyone
      *              who is authenticated with a Google account or a service account.
      *           * `user:{emailid}`: An email address that represents a specific Google
-     *              account. For example, `alice&#64;example.com` .
+     *              account. For example, `alice\@example.com` .
      *           * `serviceAccount:{emailid}`: An email address that represents a service
-     *              account. For example, `my-other-app&#64;appspot.gserviceaccount.com`.
+     *              account. For example, `my-other-app\@appspot.gserviceaccount.com`.
      *           * `group:{emailid}`: An email address that represents a Google group.
-     *              For example, `admins&#64;example.com`.
+     *              For example, `admins\@example.com`.
      *           * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique
      *              identifier) representing a user that has been recently deleted. For
-     *              example, `alice&#64;example.com?uid=123456789012345678901`. If the user is
+     *              example, `alice\@example.com?uid=123456789012345678901`. If the user is
      *              recovered, this value reverts to `user:{emailid}` and the recovered user
      *              retains the role in the binding.
      *           * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus
      *              unique identifier) representing a service account that has been recently
      *              deleted. For example,
-     *              `my-other-app&#64;appspot.gserviceaccount.com?uid=123456789012345678901`.
+     *              `my-other-app\@appspot.gserviceaccount.com?uid=123456789012345678901`.
      *              If the service account is undeleted, this value reverts to
      *              `serviceAccount:{emailid}` and the undeleted service account retains the
      *              role in the binding.
      *           * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique
      *              identifier) representing a Google group that has been recently
-     *              deleted. For example, `admins&#64;example.com?uid=123456789012345678901`. If
+     *              deleted. For example, `admins\@example.com?uid=123456789012345678901`. If
      *              the group is recovered, this value reverts to `group:{emailid}` and the
      *              recovered group retains the role in the binding.
      *           * `domain:{domain}`: The G Suite domain (primary) that represents all the
@@ -160,40 +160,40 @@ class Binding extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Specifies the principals requesting access for a Cloud Platform resource.
+     * Specifies the principals requesting access for a Google Cloud resource.
      * `members` can have the following values:
      * * `allUsers`: A special identifier that represents anyone who is
      *    on the internet; with or without a Google account.
      * * `allAuthenticatedUsers`: A special identifier that represents anyone
      *    who is authenticated with a Google account or a service account.
      * * `user:{emailid}`: An email address that represents a specific Google
-     *    account. For example, `alice&#64;example.com` .
+     *    account. For example, `alice\@example.com` .
      * * `serviceAccount:{emailid}`: An email address that represents a service
-     *    account. For example, `my-other-app&#64;appspot.gserviceaccount.com`.
+     *    account. For example, `my-other-app\@appspot.gserviceaccount.com`.
      * * `group:{emailid}`: An email address that represents a Google group.
-     *    For example, `admins&#64;example.com`.
+     *    For example, `admins\@example.com`.
      * * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique
      *    identifier) representing a user that has been recently deleted. For
-     *    example, `alice&#64;example.com?uid=123456789012345678901`. If the user is
+     *    example, `alice\@example.com?uid=123456789012345678901`. If the user is
      *    recovered, this value reverts to `user:{emailid}` and the recovered user
      *    retains the role in the binding.
      * * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus
      *    unique identifier) representing a service account that has been recently
      *    deleted. For example,
-     *    `my-other-app&#64;appspot.gserviceaccount.com?uid=123456789012345678901`.
+     *    `my-other-app\@appspot.gserviceaccount.com?uid=123456789012345678901`.
      *    If the service account is undeleted, this value reverts to
      *    `serviceAccount:{emailid}` and the undeleted service account retains the
      *    role in the binding.
      * * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique
      *    identifier) representing a Google group that has been recently
-     *    deleted. For example, `admins&#64;example.com?uid=123456789012345678901`. If
+     *    deleted. For example, `admins\@example.com?uid=123456789012345678901`. If
      *    the group is recovered, this value reverts to `group:{emailid}` and the
      *    recovered group retains the role in the binding.
      * * `domain:{domain}`: The G Suite domain (primary) that represents all the
      *    users of that domain. For example, `google.com` or `example.com`.
      *
      * Generated from protobuf field <code>repeated string members = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<string>
      */
     public function getMembers()
     {
@@ -201,40 +201,40 @@ class Binding extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Specifies the principals requesting access for a Cloud Platform resource.
+     * Specifies the principals requesting access for a Google Cloud resource.
      * `members` can have the following values:
      * * `allUsers`: A special identifier that represents anyone who is
      *    on the internet; with or without a Google account.
      * * `allAuthenticatedUsers`: A special identifier that represents anyone
      *    who is authenticated with a Google account or a service account.
      * * `user:{emailid}`: An email address that represents a specific Google
-     *    account. For example, `alice&#64;example.com` .
+     *    account. For example, `alice\@example.com` .
      * * `serviceAccount:{emailid}`: An email address that represents a service
-     *    account. For example, `my-other-app&#64;appspot.gserviceaccount.com`.
+     *    account. For example, `my-other-app\@appspot.gserviceaccount.com`.
      * * `group:{emailid}`: An email address that represents a Google group.
-     *    For example, `admins&#64;example.com`.
+     *    For example, `admins\@example.com`.
      * * `deleted:user:{emailid}?uid={uniqueid}`: An email address (plus unique
      *    identifier) representing a user that has been recently deleted. For
-     *    example, `alice&#64;example.com?uid=123456789012345678901`. If the user is
+     *    example, `alice\@example.com?uid=123456789012345678901`. If the user is
      *    recovered, this value reverts to `user:{emailid}` and the recovered user
      *    retains the role in the binding.
      * * `deleted:serviceAccount:{emailid}?uid={uniqueid}`: An email address (plus
      *    unique identifier) representing a service account that has been recently
      *    deleted. For example,
-     *    `my-other-app&#64;appspot.gserviceaccount.com?uid=123456789012345678901`.
+     *    `my-other-app\@appspot.gserviceaccount.com?uid=123456789012345678901`.
      *    If the service account is undeleted, this value reverts to
      *    `serviceAccount:{emailid}` and the undeleted service account retains the
      *    role in the binding.
      * * `deleted:group:{emailid}?uid={uniqueid}`: An email address (plus unique
      *    identifier) representing a Google group that has been recently
-     *    deleted. For example, `admins&#64;example.com?uid=123456789012345678901`. If
+     *    deleted. For example, `admins\@example.com?uid=123456789012345678901`. If
      *    the group is recovered, this value reverts to `group:{emailid}` and the
      *    recovered group retains the role in the binding.
      * * `domain:{domain}`: The G Suite domain (primary) that represents all the
      *    users of that domain. For example, `google.com` or `example.com`.
      *
      * Generated from protobuf field <code>repeated string members = 2;</code>
-     * @param array<string>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param string[] $var
      * @return $this
      */
     public function setMembers($var)

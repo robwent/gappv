@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta\Filter;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * The filter for string
@@ -20,19 +20,19 @@ class StringFilter extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.Filter.StringFilter.MatchType match_type = 1;</code>
      */
-    private $match_type = 0;
+    protected $match_type = 0;
     /**
      * The string value used for the matching.
      *
      * Generated from protobuf field <code>string value = 2;</code>
      */
-    private $value = '';
+    protected $value = '';
     /**
      * If true, the string value is case sensitive.
      *
      * Generated from protobuf field <code>bool case_sensitive = 3;</code>
      */
-    private $case_sensitive = false;
+    protected $case_sensitive = false;
 
     /**
      * Constructor.
@@ -132,5 +132,4 @@ class StringFilter extends \Google\Protobuf\Internal\Message
     }
 
 }
-
 

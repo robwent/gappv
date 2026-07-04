@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			const dataId = element.getAttribute('data-id');
 			const dataUpdate = element.getAttribute('data-update');
 			if (dataId && dataUpdate === 'true') {
-				console.log('Updating ' + dataId);
 				element.innerHTML = 'Updating...';
 				const xhr = new XMLHttpRequest();
 				xhr.open('POST', ajaxurl, true);
@@ -31,7 +30,18 @@ document.addEventListener('DOMContentLoaded', function() {
 					index++;
 					updateElement();
 				};
-				xhr.send(`action=gappv_ajax_views_update&post_id=${dataId}`);
+				const params = new URLSearchParams();
+				params.append('action', 'gappv_ajax_views_update');
+				params.append('object_id', dataId);
+				params.append('object_type', element.getAttribute('data-type') || 'post');
+				const taxonomy = element.getAttribute('data-taxonomy');
+				if (taxonomy) {
+					params.append('taxonomy', taxonomy);
+				}
+				if (typeof gappv_ajax !== 'undefined' && gappv_ajax.nonce) {
+					params.append('nonce', gappv_ajax.nonce);
+				}
+				xhr.send(params.toString());
 			} else {
 				index++;
 				updateElement();

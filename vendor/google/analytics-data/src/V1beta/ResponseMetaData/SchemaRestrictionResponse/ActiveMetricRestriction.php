@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta\ResponseMetaData\SchemaRestrictionResponse;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * A metric actively restricted in creating the report.
@@ -20,7 +20,7 @@ class ActiveMetricRestriction extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>optional string metric_name = 1;</code>
      */
-    private $metric_name = null;
+    protected $metric_name = null;
     /**
      * The reason for this metric's restriction.
      *
@@ -36,7 +36,7 @@ class ActiveMetricRestriction extends \Google\Protobuf\Internal\Message
      *
      *     @type string $metric_name
      *           The name of the restricted metric.
-     *     @type array<int>|\Google\Protobuf\Internal\RepeatedField $restricted_metric_types
+     *     @type int[] $restricted_metric_types
      *           The reason for this metric's restriction.
      * }
      */
@@ -85,7 +85,7 @@ class ActiveMetricRestriction extends \Google\Protobuf\Internal\Message
      * The reason for this metric's restriction.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.RestrictedMetricType restricted_metric_types = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * @return RepeatedField<int>
      */
     public function getRestrictedMetricTypes()
     {
@@ -96,7 +96,7 @@ class ActiveMetricRestriction extends \Google\Protobuf\Internal\Message
      * The reason for this metric's restriction.
      *
      * Generated from protobuf field <code>repeated .google.analytics.data.v1beta.RestrictedMetricType restricted_metric_types = 2;</code>
-     * @param array<int>|\Google\Protobuf\Internal\RepeatedField $var
+     * @param int[] $var
      * @return $this
      */
     public function setRestrictedMetricTypes($var)
@@ -108,5 +108,4 @@ class ActiveMetricRestriction extends \Google\Protobuf\Internal\Message
     }
 
 }
-
 

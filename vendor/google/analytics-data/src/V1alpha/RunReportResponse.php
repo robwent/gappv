@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1alpha;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * The response report table corresponding to a request.
@@ -19,38 +19,38 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * Describes dimension columns. The number of DimensionHeaders and ordering of
      * DimensionHeaders matches the dimensions present in rows.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.DimensionHeader dimension_headers = 11;</code>
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.DimensionHeader dimension_headers = 1;</code>
      */
     private $dimension_headers;
     /**
      * Describes metric columns. The number of MetricHeaders and ordering of
      * MetricHeaders matches the metrics present in rows.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricHeader metric_headers = 1;</code>
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricHeader metric_headers = 2;</code>
      */
     private $metric_headers;
     /**
      * Rows of dimension value combinations and metric values in the report.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row rows = 2;</code>
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row rows = 3;</code>
      */
     private $rows;
     /**
      * If requested, the totaled values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row totals = 8;</code>
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row totals = 4;</code>
      */
     private $totals;
     /**
      * If requested, the maximum values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row maximums = 9;</code>
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row maximums = 5;</code>
      */
     private $maximums;
     /**
      * If requested, the minimum values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row minimums = 10;</code>
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row minimums = 6;</code>
      */
     private $minimums;
     /**
@@ -61,21 +61,36 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * To learn more about this pagination parameter, see
      * [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
      *
-     * Generated from protobuf field <code>int32 row_count = 12;</code>
+     * Generated from protobuf field <code>int32 row_count = 7;</code>
      */
-    private $row_count = 0;
+    protected $row_count = 0;
     /**
      * Metadata for the report.
      *
-     * Generated from protobuf field <code>.google.analytics.data.v1alpha.ResponseMetaData metadata = 6;</code>
+     * Generated from protobuf field <code>.google.analytics.data.v1alpha.ResponseMetaData metadata = 8;</code>
      */
-    private $metadata = null;
+    protected $metadata = null;
     /**
      * This Analytics Property's quota state including this request.
      *
-     * Generated from protobuf field <code>.google.analytics.data.v1alpha.PropertyQuota property_quota = 7;</code>
+     * Generated from protobuf field <code>.google.analytics.data.v1alpha.PropertyQuota property_quota = 9;</code>
      */
-    private $property_quota = null;
+    protected $property_quota = null;
+    /**
+     * Identifies what kind of resource this message is. This `kind` is always the
+     * fixed string "analyticsData#runReport". Useful to distinguish between
+     * response types in JSON.
+     *
+     * Generated from protobuf field <code>string kind = 10;</code>
+     */
+    protected $kind = '';
+    /**
+     * A token, which can be sent as `page_token` to retrieve the next page.
+     * If this field is omitted, there are no subsequent pages.
+     *
+     * Generated from protobuf field <code>optional string next_page_token = 11;</code>
+     */
+    protected $next_page_token = null;
 
     /**
      * Constructor.
@@ -83,19 +98,19 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Google\Analytics\Data\V1alpha\DimensionHeader[]|\Google\Protobuf\Internal\RepeatedField $dimension_headers
+     *     @type \Google\Analytics\Data\V1alpha\DimensionHeader[] $dimension_headers
      *           Describes dimension columns. The number of DimensionHeaders and ordering of
      *           DimensionHeaders matches the dimensions present in rows.
-     *     @type \Google\Analytics\Data\V1alpha\MetricHeader[]|\Google\Protobuf\Internal\RepeatedField $metric_headers
+     *     @type \Google\Analytics\Data\V1alpha\MetricHeader[] $metric_headers
      *           Describes metric columns. The number of MetricHeaders and ordering of
      *           MetricHeaders matches the metrics present in rows.
-     *     @type \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $rows
+     *     @type \Google\Analytics\Data\V1alpha\Row[] $rows
      *           Rows of dimension value combinations and metric values in the report.
-     *     @type \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $totals
+     *     @type \Google\Analytics\Data\V1alpha\Row[] $totals
      *           If requested, the totaled values of metrics.
-     *     @type \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $maximums
+     *     @type \Google\Analytics\Data\V1alpha\Row[] $maximums
      *           If requested, the maximum values of metrics.
-     *     @type \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $minimums
+     *     @type \Google\Analytics\Data\V1alpha\Row[] $minimums
      *           If requested, the minimum values of metrics.
      *     @type int $row_count
      *           The total number of rows in the query result, regardless of the number of
@@ -108,6 +123,13 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      *           Metadata for the report.
      *     @type \Google\Analytics\Data\V1alpha\PropertyQuota $property_quota
      *           This Analytics Property's quota state including this request.
+     *     @type string $kind
+     *           Identifies what kind of resource this message is. This `kind` is always the
+     *           fixed string "analyticsData#runReport". Useful to distinguish between
+     *           response types in JSON.
+     *     @type string $next_page_token
+     *           A token, which can be sent as `page_token` to retrieve the next page.
+     *           If this field is omitted, there are no subsequent pages.
      * }
      */
     public function __construct($data = NULL) {
@@ -119,8 +141,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * Describes dimension columns. The number of DimensionHeaders and ordering of
      * DimensionHeaders matches the dimensions present in rows.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.DimensionHeader dimension_headers = 11;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.DimensionHeader dimension_headers = 1;</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1alpha\DimensionHeader>
      */
     public function getDimensionHeaders()
     {
@@ -131,8 +153,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * Describes dimension columns. The number of DimensionHeaders and ordering of
      * DimensionHeaders matches the dimensions present in rows.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.DimensionHeader dimension_headers = 11;</code>
-     * @param \Google\Analytics\Data\V1alpha\DimensionHeader[]|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.DimensionHeader dimension_headers = 1;</code>
+     * @param \Google\Analytics\Data\V1alpha\DimensionHeader[] $var
      * @return $this
      */
     public function setDimensionHeaders($var)
@@ -147,8 +169,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * Describes metric columns. The number of MetricHeaders and ordering of
      * MetricHeaders matches the metrics present in rows.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricHeader metric_headers = 1;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricHeader metric_headers = 2;</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1alpha\MetricHeader>
      */
     public function getMetricHeaders()
     {
@@ -159,8 +181,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * Describes metric columns. The number of MetricHeaders and ordering of
      * MetricHeaders matches the metrics present in rows.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricHeader metric_headers = 1;</code>
-     * @param \Google\Analytics\Data\V1alpha\MetricHeader[]|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.MetricHeader metric_headers = 2;</code>
+     * @param \Google\Analytics\Data\V1alpha\MetricHeader[] $var
      * @return $this
      */
     public function setMetricHeaders($var)
@@ -174,8 +196,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * Rows of dimension value combinations and metric values in the report.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row rows = 2;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row rows = 3;</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1alpha\Row>
      */
     public function getRows()
     {
@@ -185,8 +207,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * Rows of dimension value combinations and metric values in the report.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row rows = 2;</code>
-     * @param \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row rows = 3;</code>
+     * @param \Google\Analytics\Data\V1alpha\Row[] $var
      * @return $this
      */
     public function setRows($var)
@@ -200,8 +222,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * If requested, the totaled values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row totals = 8;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row totals = 4;</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1alpha\Row>
      */
     public function getTotals()
     {
@@ -211,8 +233,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * If requested, the totaled values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row totals = 8;</code>
-     * @param \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row totals = 4;</code>
+     * @param \Google\Analytics\Data\V1alpha\Row[] $var
      * @return $this
      */
     public function setTotals($var)
@@ -226,8 +248,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * If requested, the maximum values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row maximums = 9;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row maximums = 5;</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1alpha\Row>
      */
     public function getMaximums()
     {
@@ -237,8 +259,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * If requested, the maximum values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row maximums = 9;</code>
-     * @param \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row maximums = 5;</code>
+     * @param \Google\Analytics\Data\V1alpha\Row[] $var
      * @return $this
      */
     public function setMaximums($var)
@@ -252,8 +274,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * If requested, the minimum values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row minimums = 10;</code>
-     * @return \Google\Protobuf\Internal\RepeatedField
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row minimums = 6;</code>
+     * @return RepeatedField<\Google\Analytics\Data\V1alpha\Row>
      */
     public function getMinimums()
     {
@@ -263,8 +285,8 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * If requested, the minimum values of metrics.
      *
-     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row minimums = 10;</code>
-     * @param \Google\Analytics\Data\V1alpha\Row[]|\Google\Protobuf\Internal\RepeatedField $var
+     * Generated from protobuf field <code>repeated .google.analytics.data.v1alpha.Row minimums = 6;</code>
+     * @param \Google\Analytics\Data\V1alpha\Row[] $var
      * @return $this
      */
     public function setMinimums($var)
@@ -283,7 +305,7 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * To learn more about this pagination parameter, see
      * [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
      *
-     * Generated from protobuf field <code>int32 row_count = 12;</code>
+     * Generated from protobuf field <code>int32 row_count = 7;</code>
      * @return int
      */
     public function getRowCount()
@@ -299,7 +321,7 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
      * To learn more about this pagination parameter, see
      * [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
      *
-     * Generated from protobuf field <code>int32 row_count = 12;</code>
+     * Generated from protobuf field <code>int32 row_count = 7;</code>
      * @param int $var
      * @return $this
      */
@@ -314,12 +336,12 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * Metadata for the report.
      *
-     * Generated from protobuf field <code>.google.analytics.data.v1alpha.ResponseMetaData metadata = 6;</code>
+     * Generated from protobuf field <code>.google.analytics.data.v1alpha.ResponseMetaData metadata = 8;</code>
      * @return \Google\Analytics\Data\V1alpha\ResponseMetaData|null
      */
     public function getMetadata()
     {
-        return isset($this->metadata) ? $this->metadata : null;
+        return $this->metadata;
     }
 
     public function hasMetadata()
@@ -335,7 +357,7 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * Metadata for the report.
      *
-     * Generated from protobuf field <code>.google.analytics.data.v1alpha.ResponseMetaData metadata = 6;</code>
+     * Generated from protobuf field <code>.google.analytics.data.v1alpha.ResponseMetaData metadata = 8;</code>
      * @param \Google\Analytics\Data\V1alpha\ResponseMetaData $var
      * @return $this
      */
@@ -350,12 +372,12 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * This Analytics Property's quota state including this request.
      *
-     * Generated from protobuf field <code>.google.analytics.data.v1alpha.PropertyQuota property_quota = 7;</code>
+     * Generated from protobuf field <code>.google.analytics.data.v1alpha.PropertyQuota property_quota = 9;</code>
      * @return \Google\Analytics\Data\V1alpha\PropertyQuota|null
      */
     public function getPropertyQuota()
     {
-        return isset($this->property_quota) ? $this->property_quota : null;
+        return $this->property_quota;
     }
 
     public function hasPropertyQuota()
@@ -371,7 +393,7 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     /**
      * This Analytics Property's quota state including this request.
      *
-     * Generated from protobuf field <code>.google.analytics.data.v1alpha.PropertyQuota property_quota = 7;</code>
+     * Generated from protobuf field <code>.google.analytics.data.v1alpha.PropertyQuota property_quota = 9;</code>
      * @param \Google\Analytics\Data\V1alpha\PropertyQuota $var
      * @return $this
      */
@@ -379,6 +401,74 @@ class RunReportResponse extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Google\Analytics\Data\V1alpha\PropertyQuota::class);
         $this->property_quota = $var;
+
+        return $this;
+    }
+
+    /**
+     * Identifies what kind of resource this message is. This `kind` is always the
+     * fixed string "analyticsData#runReport". Useful to distinguish between
+     * response types in JSON.
+     *
+     * Generated from protobuf field <code>string kind = 10;</code>
+     * @return string
+     */
+    public function getKind()
+    {
+        return $this->kind;
+    }
+
+    /**
+     * Identifies what kind of resource this message is. This `kind` is always the
+     * fixed string "analyticsData#runReport". Useful to distinguish between
+     * response types in JSON.
+     *
+     * Generated from protobuf field <code>string kind = 10;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setKind($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->kind = $var;
+
+        return $this;
+    }
+
+    /**
+     * A token, which can be sent as `page_token` to retrieve the next page.
+     * If this field is omitted, there are no subsequent pages.
+     *
+     * Generated from protobuf field <code>optional string next_page_token = 11;</code>
+     * @return string
+     */
+    public function getNextPageToken()
+    {
+        return isset($this->next_page_token) ? $this->next_page_token : '';
+    }
+
+    public function hasNextPageToken()
+    {
+        return isset($this->next_page_token);
+    }
+
+    public function clearNextPageToken()
+    {
+        unset($this->next_page_token);
+    }
+
+    /**
+     * A token, which can be sent as `page_token` to retrieve the next page.
+     * If this field is omitted, there are no subsequent pages.
+     *
+     * Generated from protobuf field <code>optional string next_page_token = 11;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setNextPageToken($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->next_page_token = $var;
 
         return $this;
     }

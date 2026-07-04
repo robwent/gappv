@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta\OrderBy\PivotOrderBy;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * A pair of dimension names and values. Rows with this dimension pivot pair
@@ -33,13 +33,13 @@ class PivotSelection extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>string dimension_name = 1;</code>
      */
-    private $dimension_name = '';
+    protected $dimension_name = '';
     /**
      * Order by only when the named dimension is this value.
      *
      * Generated from protobuf field <code>string dimension_value = 2;</code>
      */
-    private $dimension_value = '';
+    protected $dimension_value = '';
 
     /**
      * Constructor.
@@ -111,5 +111,4 @@ class PivotSelection extends \Google\Protobuf\Internal\Message
     }
 
 }
-
 

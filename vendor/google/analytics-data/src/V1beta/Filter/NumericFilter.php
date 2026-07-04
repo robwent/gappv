@@ -5,8 +5,8 @@
 namespace Google\Analytics\Data\V1beta\Filter;
 
 use Google\Protobuf\Internal\GPBType;
-use Google\Protobuf\Internal\RepeatedField;
 use Google\Protobuf\Internal\GPBUtil;
+use Google\Protobuf\RepeatedField;
 
 /**
  * Filters for numeric or date values.
@@ -20,13 +20,13 @@ class NumericFilter extends \Google\Protobuf\Internal\Message
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.Filter.NumericFilter.Operation operation = 1;</code>
      */
-    private $operation = 0;
+    protected $operation = 0;
     /**
      * A numeric value or a date value.
      *
      * Generated from protobuf field <code>.google.analytics.data.v1beta.NumericValue value = 2;</code>
      */
-    private $value = null;
+    protected $value = null;
 
     /**
      * Constructor.
@@ -108,5 +108,4 @@ class NumericFilter extends \Google\Protobuf\Internal\Message
     }
 
 }
-
 
